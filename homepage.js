@@ -1,0 +1,1 @@
+alert("Homepage script started.");
