@@ -3,13 +3,15 @@ Member
 -> MemberID => int (Primary Key)
 -> Name => varchar(100)
 -> Passwd => varchar(100)
-/*
-Note: Passwords will be encrypted on the server side. Symmetric encryption will be used. The cryptography method that would be used for the encryption is to be decided.
-*/
 -> EmailAddress => varchar(200)
 -> PrivilegeType => int
+
 /*
-Note: The PrivilegeType attribute can only have a value of 0, 1 or 2.
+Notes:
+Passwords will be encrypted on the server side. Symmetric encryption will be used. 
+The cryptography method that would be used for the encryption is to be decided.
+
+The PrivilegeType attribute can only have a value of 0, 1 or 2.
 Mapping of PrivilegeType attribute values:
 Guest = 0
 NormalMember = 1
@@ -27,8 +29,11 @@ HealthArticlePostReaction
 -> HealthArticlePostReactionID => int (Primary Key)
 -> MemberID => int (Foreign Key REFERENCES Member.MemberID)
 -> ReactionType => int
+
 /*
-Note: The ReactionType attribute can only have a value of 0 or 1. 0 represents a like while 1 represents a dislike.
+Notes:
+The ReactionType attribute can only have a value of 0 or 1. 0 represents a like while 1 
+represents a dislike.
 */
 
 // Medium priority
@@ -52,13 +57,44 @@ DoctorReview
 -> ReviewingMemberID => int (Foreign Key REFERENCES Member.MemberID)
 -> ReviewedDoctorID => int (Foreign Key REFERENCES Doctor.DoctorID)
 -> ReviewStarCount => int
-/*
-Note: The value of the ReviewStarCount attribute must only be a value ranging from 0 to 5.
-*/
 -> CreationDateTime => datetime
 -> Content => varchar(8000)
+
+/*
+Notes:
+The value of the ReviewStarCount attribute must only be a value ranging from 0 to 5.
+*/
 
 // High priority
 AppointmentBooking
 -> AppointmentBookingID => int (Primary Key)
--> 
+-> BookingMemberID => int (Foreign Key REFERENCES Member.MemberID)
+-> BookedDoctorID => int (Foreign Key REFERENCES Doctor.DoctorID)
+-> AppointmentBookingCreationDateTime => datetime
+-> AppointmentDateTime => datetime
+
+// High priority
+Transaction
+-> TransactionID => int (Primary Key)
+-> OriginMemberID => int (Foreign Key REFERENCES Member.MemberID)
+-> AssociatedAppointmentBookingID => int (Foreign Key REFERENCES AppointmentBooking.AppointmentBookingID)
+-> TransactionAmount => money
+-> TransactionMethod => int
+
+/*
+Notes:
+The OriginMemberID attribute stores the ID of the member who performed the transaction.
+
+The value of the TransactionMethod attribute must be a value found in the TransactionMethod 
+attribute.
+Mapping of TransactionMethod attribute values:
+CreditCard = 0
+BankAccount = 1
+*/
+
+// High priority
+Consultation
+-> ConsultationID => int (Primary Key)
+-> ConsultingMemberID => int (Foreign Key REFERENCES Member.MemberID)
+-> ConsultantDoctorID => int (Foreign Key REFERENCES Doctor.DoctorID)
+-> AssociatedAppointmentBookingID => int (Foreign Key REFERENCES AppointmentBooking.AppointmentBookingID)

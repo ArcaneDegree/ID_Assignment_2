@@ -1,6 +1,8 @@
-var Http = require("http");
+const Http = require("http");
 
-var FileSystem = require("fs");
+const FileSystem = require("fs");
+
+const Request = require("request");
 
 var http_server = null;
 
@@ -8,7 +10,15 @@ var port_num = 8080;
 
 var host_name = "localhost";
 
-var current_working_dir_path = "C:/Poly/Interactive_Development_Y1S2/ASG2/ID_Assignment_2";
+/*
+Previously current_working_dir_path value:
+C:/Poly/Interactive_Development_Y1S2/ASG2/ID_Assignment_2
+*/
+var current_working_dir_path = __dirname;
+
+var current_full_access_api_key = RetrieveDBFullAccessAPIKey();
+
+var db_host_name = "interactivedevasg2db-e461.restdb.io";
 
 function OnHttpServerStartListening()
 {
@@ -58,6 +68,62 @@ function SearchAllDirsForFile(file_name, working_dir_path)
     return result_file_path;
 }
 
+// Returns a string containing the full access API key if the key was found in the details.txt file, 
+// otherwise returns "" (an empty string).
+function RetrieveDBFullAccessAPIKey()
+{
+    details_file_text = FileSystem.readFileSync(current_working_dir_path + "/details.txt", "utf8");
+
+    details_file_lines = details_file_text.split("\n");
+
+    for (current_line_index = 0; current_line_index < details_file_lines.length; current_line_index++)
+    {
+        detail_key_val_entry = details_file_lines[current_line_index].split(":");
+
+        if (detail_key_val_entry[0] == "full_access_api_key")
+        {
+            return detail_key_val_entry[1];
+        }
+    }
+
+    return "";
+}
+
+function GetDBTablePath(table_name)
+{
+    return `/rest/${table_name.toLowerCase()}`;
+}
+
+function SendRequestToDB(selected_method, selected_table_name, response)
+{
+    let options = {
+        method: `${selected_method.toUpperCase()}`,
+        url: `https://${db_host_name}${GetDBTablePath(selected_table_name)}`,
+        headers: 
+        {   'cache-control': 'no-cache',
+            'x-apikey': `${current_full_access_api_key}`
+        }
+    };
+
+    // console.log(`Current url in options object: ${options.url}`);
+
+    Request(options, function(error, responseObj, body)
+    {
+        if (error != null)
+        {
+            throw new Error(error);
+        }
+
+        // console.log(`Response body: ${body}`);
+
+        response.writeHead(200, {"Content-Type" : "application/json"});
+
+        response.write(body);
+
+        response.end();
+    });
+}
+
 function HandleRequest(request, response)
 {
     // console.log(request.url);
@@ -69,6 +135,18 @@ function HandleRequest(request, response)
         response.write(FileSystem.readFileSync(SearchAllDirsForFile("index.html", current_working_dir_path)));
 
         response.end();
+    }
+    // Status after testing: Working
+    else if (request.url == "/get_members_data")
+    {
+        // console.log("Received get_members_data request.");
+
+        SendRequestToDB("GET", "member", response);
+    }
+    // Status after testing: Working
+    else if (request.url == "/get_all_health_articles")
+    {
+        SendRequestToDB("GET", "health-article-post", response);
     }
     else
     {

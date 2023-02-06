@@ -1,0 +1,29 @@
+API functions:
+
+Functions related to the 'member' table:
+=> get_members_data
+-- URL path:/get_members_data
+
+Functions related to the 'health-article-post' table:
+=> get_all_health_articles
+-- URL path: /get_all_health_articles
+
+=> get_health_article
+-- URL path: /get_health_article
+-- Request body must have the following attributes: selected_health_article_id AND/OR
+selected_health_article_title
+
+=> add_new_health_article
+-- URL path: /add_new_health_article
+-- Request body must have the following attributes: new_health_article_title AND
+new_health_article_description
+
+=> update_health_article
+-- URL path: /update_health_article
+-- Request body must have the following attributes: selected_health_article_id AND
+updated_health_article_title AND updated_health_article_description
+
+=> delete_health_article
+-- URL path: /delete_health_article
+-- Request body must have the following attributes: selected_health_article_id AND/OR
+selected_health_article_title
