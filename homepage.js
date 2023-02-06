@@ -1,1 +1,0 @@
-alert("Homepage script started.");
