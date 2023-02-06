@@ -1,0 +1,64 @@
+// High priority
+Member
+-> MemberID => int (Primary Key)
+-> Name => varchar(100)
+-> Passwd => varchar(100)
+/*
+Note: Passwords will be encrypted on the server side. Symmetric encryption will be used. The cryptography method that would be used for the encryption is to be decided.
+*/
+-> EmailAddress => varchar(200)
+-> PrivilegeType => int
+/*
+Note: The PrivilegeType attribute can only have a value of 0, 1 or 2.
+Mapping of PrivilegeType attribute values:
+Guest = 0
+NormalMember = 1
+Administrator = 2
+*/
+
+// High priority
+HealthArticlePost
+-> HealthArticlePostID => int (Primary Key)
+-> Title => varchar(1000)
+-> Content => varchar(8000)
+
+// Medium priority
+HealthArticlePostReaction
+-> HealthArticlePostReactionID => int (Primary Key)
+-> MemberID => int (Foreign Key REFERENCES Member.MemberID)
+-> ReactionType => int
+/*
+Note: The ReactionType attribute can only have a value of 0 or 1. 0 represents a like while 1 represents a dislike.
+*/
+
+// Medium priority
+HealthArticleComment
+-> HealthArticleCommentID => int (Primary Key)
+-> MemberID => int (Foreign Key REFERENCES Member.MemberID)
+-> CreationDateTime => datetime
+-> Content => varchar(8000)
+
+// High priority
+Doctor
+-> DoctorID => int (Primary Key)
+-> Name => varchar(100)
+-> EmailAddress => varchar(200)
+-> Specialization => varchar(200)
+-> Description => varchar(1000)
+
+// High priority
+DoctorReview
+-> DoctorReviewID => int (Primary Key)
+-> ReviewingMemberID => int (Foreign Key REFERENCES Member.MemberID)
+-> ReviewedDoctorID => int (Foreign Key REFERENCES Doctor.DoctorID)
+-> ReviewStarCount => int
+/*
+Note: The value of the ReviewStarCount attribute must only be a value ranging from 0 to 5.
+*/
+-> CreationDateTime => datetime
+-> Content => varchar(8000)
+
+// High priority
+AppointmentBooking
+-> AppointmentBookingID => int (Primary Key)
+-> 
