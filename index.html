@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -32,16 +32,52 @@
                 <a href="">Articles</a>
             </li>
             <li>
-                <a href="">Login</a>
+                <button class='loginbtn' onclick="document.getElementById('login-form').style.display='block'" style="width:auto;">Login</button>
            </li>
          </ul>
-
-
-
-    </nav>
-
-
+ </nav>
 </header>
+
+
+<div class="motto">At your quick service</div>
+
+<div class="bg">
+    <img src="https://images.pexels.com/photos/1170979/pexels-photo-1170979.jpeg?auto=compress&cs=tinysrgb&w=600"></imgsrc>
+</div>
+
+<!--new-->
+
+<div id='login-form'class='login-page'>
+    <div class="form-box">
+        <div class='button-box'>
+            <div id='btn'></div>
+            <button type='button'onclick='login()'class='toggle-btn'>Log In</button>
+            <button type='button'onclick='register()'class='toggle-btn'>Register</button>
+        </div>
+        <form id='login' class='input-group-login'>
+            <input type='text'class='input-field'placeholder='Email' required >
+    <input type='password'class='input-field'placeholder='Enter Password' required>
+    <input type='checkbox'class='check-box'><span>Remember Password</span>
+    <button type='submit'class='submit-btn'>Log in</button>
+ </form>
+ <form id='register' class='input-group-register'>
+     <input type='text'class='input-field'placeholder='First Name' required>
+     <input type='text'class='input-field'placeholder='Last Name ' required>
+     <input type='email'class='input-field'placeholder='Email' required>
+     <input type='password'class='input-field'placeholder='Enter Password' required>
+     <input type='password'class='input-field'placeholder='Confirm Password' required>
+     <input type='checkbox'class='check-box'><span>I agree to the terms and conditions</span>
+            <button type='submit'class='submit-btn'>Register</button>
+     </form>
+    </div>
+</div>
+
+
+
+
+
+
+
 
 
 
