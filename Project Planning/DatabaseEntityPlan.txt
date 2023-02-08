@@ -1,3 +1,6 @@
+//Note: The RestDB datetime format for all datetime attributes is 'DD/MM/YYYY hh:mm:ssa' (without
+the single quotation marks).
+
 // High priority
 Member
 -> MemberID => int (Primary Key)
@@ -5,6 +8,8 @@ Member
 -> Passwd => varchar(100)
 -> EmailAddress => varchar(200)
 -> PrivilegeType => int
+-> DateTimeJoined => datetime
+-> CurrentStatus => int
 
 /*
 Notes:
@@ -16,6 +21,12 @@ Mapping of PrivilegeType attribute values:
 Guest = 0
 NormalMember = 1
 Administrator = 2
+
+The value of the CurrentStatus attribute must be a value found in the CurrentStatus 
+attribute mapping table.
+Mapping of CurrentStatus attribute values:
+Offline = 0
+Online = 1
 */
 
 // High priority
@@ -86,7 +97,7 @@ Notes:
 The OriginMemberID attribute stores the ID of the member who performed the transaction.
 
 The value of the TransactionMethod attribute must be a value found in the TransactionMethod 
-attribute.
+attribute mapping table.
 Mapping of TransactionMethod attribute values:
 CreditCard = 0
 BankAccount = 1

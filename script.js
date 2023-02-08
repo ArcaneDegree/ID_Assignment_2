@@ -31,7 +31,6 @@ var x=document.getElementById('login');
             }
         }        
 
-/*
 // For backend testing purposes only (Do not remove this, if necessary, you may comment this part out)
 // Start of backend testing part
 function SendTestRequestToServer(selected_method, selected_url_path, selected_body_str = "")
@@ -42,35 +41,25 @@ function SendTestRequestToServer(selected_method, selected_url_path, selected_bo
     {
         if (test_request.readyState == XMLHttpRequest.DONE)
         {
-            if (test_request.status == 200)
-            {
-                console.log(`Response received: ${test_request.responseText}`);
-            }
-            else
-            {
-                console.log(`Response status code: ${test_request.status}`);
-            }
+            console.log(`Response status code: ${test_request.status}`);
+
+            console.log(`Response received: ${test_request.responseText}`);
         }
     }
 
-    test_request.open(selected_method.toUpperCase(), selected_url_path, true);
+    // console.log("selected_body_str value: " + selected_body_str);
 
-    if (selected_body_str == "")
+    if (selected_body_str != "")
     {
-        test_request.send();
-    }
-    else
-    {
-        // console.log(JSON.stringify(selected_body));
+        test_request.open("POST", selected_url_path, true);
 
         test_request.send(selected_body_str);
     }
-}
+    else
+    {
+        test_request.open(selected_method.toUpperCase(), selected_url_path, true);
 
-SendTestRequestToServer("PUT", "/update_health_article", JSON.stringify({
-    HealthArticlePostID: 7,
-    Title: "The benefits of eating oranges",
-    Content: "Eating oranges can benefit a person in several different ways. For instance, an orange a day might still be able to keep the doctor away..."
-}));
+        test_request.send();
+    }
+}
 // End of backend testing part
-*/

@@ -1,35 +1,66 @@
-API functions:
+![alt text][logo]
 
-Functions related to the 'member' table:
-=> get_members_data (Implemented)
--- URL path: /get_members_data
--- Request method: GET
+[logo]: /favicon_io/android-chrome-192x192.png "Logo Title Text 2"
+# FastDoc API Documentation
 
-Functions related to the 'health-article-post' table:
-=> get_all_health_articles (Implemented)
--- URL path: /get_all_health_articles
--- Request method: GET
+<b>Functions related to the 'member' table:</b>
+1. <b>get_members_data</b> (Implemented)
+    - URL path: /get_members_data
+    - Request method: GET
 
-=> get_health_article (Implemented)
--- URL path: /get_health_article
--- Request body must have the following attributes: selected_health_article_id AND/OR
-selected_health_article_title
--- Request method: GET
+<b>Functions related to the 'health-article-post' table:</b>
+1. <b>get_all_health_articles</b> (Implemented)
+    - URL path: /get_all_health_articles
+    - Request method: GET
 
-=> add_new_health_article (Implemented)
--- URL path: /add_new_health_article
--- Request body must have the following attributes: Title AND
-Content
--- Request method: POST
+1. <b>get_health_article</b> (Implemented)
+    - URL path: /get_health_article
+    - Request body must have the following attributes: HealthArticlePostID AND/OR Title
+    - Request method: GET
 
-=> update_health_article (Implemented)
--- URL path: /update_health_article
--- Request body must have the following attributes: HealthArticlePostID AND
-Title AND Content
--- Request method: PUT
+1. <b>add_health_article</b> (Implemented)
+    - URL path: /add_health_article
+    - Request body must have the following attributes: Title AND Content
+    - Request method: POST
 
-=> delete_health_article
--- URL path: /delete_health_article
--- Request body must have the following attributes: selected_health_article_id AND/OR
-selected_health_article_title
--- Request method: DELETE
+1. <b>update_health_article</b> (Implemented)
+    - URL path: /update_health_article
+    - Request body must have the following attributes: HealthArticlePostID AND Title AND Content
+    - Request method: PUT
+
+1. <b>delete_health_article</b> (Implemented)
+    - URL path: /delete_health_article
+    - Request body must have the following attributes: HealthArticlePostID AND/OR Title
+    - Request method: DELETE
+
+<br>
+<b>Calling convention for API:</b><br>
+URL path format: /fastdoc/[table_name]/[action]<br>
+Example:<br>
+
+> /fastdoc/member/add<br>
+
+A request with this URL will add a new record to the 'member' table/collection in the RestDB database.<br>
+<br>
+<b>List of actions that can be used in request URLs:</b>
+
+1. get_all
+1. get
+1. add
+1. update
+1. delete
+<br>
+
+<b>List of tables that can be used in request URLs/accessed from the API:</b>
+
+1. member
+1. health-article-post
+1. health-article-post-reaction
+1. health-article-comment
+1. doctor
+1. doctor-review
+1. appointment-booking
+1. transaction
+1. consultation
+<br>
+

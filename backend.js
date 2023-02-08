@@ -27,6 +27,8 @@ var current_full_access_api_key = RetrieveDBFullAccessAPIKey();
 
 var db_host_name = "interactivedevasg2db-e461.restdb.io";
 
+var favicon_ico_file_path = "/favicon_io/favicon.ico";
+
 function OnHttpServerStartListening()
 {
     console.log("Started listening on port " + port_num + ".");
@@ -143,16 +145,16 @@ function SendRequestToDB(selected_method, selected_table_name, response, selecte
     });
 }
 
-function SendStatusCode400Response(response_text = "Bad Request")
+function SendStatusCode400Response(response_obj, response_text = "Bad Request")
 {
-    response.writeHead(400, {"Content-Type": "text/plain"});
+    response_obj.writeHead(400, {"Content-Type": "text/plain"});
 
-    response.write(response_text);
+    response_obj.write(response_text);
 
-    response.end();
+    response_obj.end();
 }
 
-function ParseRequestBody(request_body_data)
+function ParseRequestBody(request_body_data, response)
 {
     // console.log(request_body_data);
 
@@ -173,7 +175,7 @@ function ParseRequestBody(request_body_data)
 
     if (request_details_obj == null)
     {
-        SendStatusCode400Response();
+        SendStatusCode400Response(response);
     }
 
     return request_details_obj;
@@ -202,7 +204,7 @@ function CheckForRequiredFieldsInRequestBodyObj(request_body_obj, request_url_pa
             response_text += "\n" + undefined_field_names_list[undefined_field_name_index];
         }
 
-        SendStatusCode400Response(response_text);
+        SendStatusCode400Response(response, response_text);
     }
 
     return undefined_field_names_list;
@@ -237,11 +239,79 @@ function QueryDB(selected_method, selected_table_name, selected_query = "", sele
     Request(options, callback_function);
 }
 
+function GetCharCountInStr(str, selected_char)
+{
+    let selected_char_occurrence_count = 0;
+
+    for (let current_char_index = 0; current_char_index < str.length; current_char_index++)
+    {
+        if (str[current_char_index] == selected_char)
+        {
+            selected_char_occurrence_count++;
+        }
+    }
+
+    return selected_char_occurrence_count;
+}
+
+function ReplaceCharInStrAt(new_char, replacement_index, str)
+{
+    if (replacement_index > str.length - 1 || replacement_index < 0)
+    {
+        return str;
+    }
+
+    return str.substring(0, replacement_index) + new_char + str.substring(replacement_index + 1);
+}
+
+function CapitalizeStr(str)
+{
+    str = ReplaceCharInStrAt(str[0].toUpperCase(), 0, str.toLowerCase());
+
+    return str;
+}
+
+function DeriveStandardIdentifierAttribNameFromTableName(table_name)
+{
+    let alt_table_name = "";
+
+    let dash_count = GetCharCountInStr(table_name, '-');
+
+    if (dash_count > 0)
+    {
+        let table_name_parts = table_name.split("-");
+
+        for (let table_name_part_index = 0; table_name_part_index < table_name_parts.length; table_name_part_index++)
+        {
+            alt_table_name += CapitalizeStr(table_name_parts[table_name_part_index]);
+        }
+    }
+    else
+    {
+        alt_table_name = CapitalizeStr(table_name);
+    }
+
+    alt_table_name += "ID";
+
+    return alt_table_name;
+}
+
+// Note: Certain Chrome browser extensions are known to cause an error on the website with the following
+// message: 'Unchecked runtime.lastError: The message port closed before a response was received'. To
+// fix this error and prevent it from occurring, the Chrome browser extension causing this error must
+// be identified and then disabled. This error is known to be caused by certain Chrome browser
+// extensions and not by the website or web application itself.
 function HandleRequest(request, response)
 {
-    // console.log(request.url);
-
     let request_url = URL.parse(request.url, true);
+
+    //console.log("Request url: " + request.url);
+
+    // console.log("Request url pathname: " + request_url.pathname);
+
+    // console.log("Request url path split('/') element at index 0: " + request_url.pathname.split("/")[0]);
+
+    // console.log("Request url split('/') length: " + request_url.pathname.split("/").length);
 
     // Procedure for handling initial request for landing page HTML file.
     // Status after testing: Working.
@@ -254,128 +324,149 @@ function HandleRequest(request, response)
         response.end();
     }
     // Status after testing: Working.
-    else if (request_url.pathname == "/get_members_data")
+    else if (request_url.pathname.split("/").length == 4 && request_url.pathname.split("/")[1] == "fastdoc")
     {
-        // console.log("Received get_members_data request.");
+        // console.log("table_action request received.");
 
-        SendRequestToDB("GET", "member", response);
-    }
-    // Status after testing: Working.
-    else if (request_url.pathname == "/get_all_health_articles")
-    {
-        SendRequestToDB("GET", "health-article-post", response);
-    }
-    // Status after testing: Working.
-    else if (request_url.pathname == "/get_health_article")
-    {
-        let request_body = "";
+        let selected_table_name = request_url.pathname.split("/")[2];
 
-        request.on("data", (chunk) =>
+        let selected_action = request_url.pathname.split("/")[3];
+
+        // console.log("Selected table name: " + selected_table_name);
+
+        // console.log("Selected action: " + selected_action);
+
+        // Status after testing: Working.
+        if (selected_action == "get_all")
         {
-            request_body += chunk;
-        });
-
-        request.on("end", () =>
+            SendRequestToDB("GET", selected_table_name, response);
+        }
+        // Status after testing: Working.
+        else if (selected_action == "get")
         {
-            let request_details_obj = ParseRequestBody(request_body);
-            
-            if (request_details_obj == null)
+            let request_body_str = "";
+
+            request.on("data", (chunk) =>
             {
-                return;
-            }
+                request_body_str += chunk;
+            });
 
-            /*
-            if (CheckForRequiredFieldsInRequestBodyObj(request_body_obj, request_url.pathname).length > 0)
+            request.on("end", () =>
             {
-                return;
-            }
-            */
+                // console.log("request_body_str value: " + request_body_str);
 
-            // console.log("Request details obj: " + request_details_obj);
+                let request_body_obj = ParseRequestBody(request_body_str, response);
 
-            // console.log("Request details obj selected_health_article_id value: " + request_details_obj.selected_health_article_id);
-            
-            // console.log("Type of request_details_obj: " + typeof request_details_obj);
-
-            SendRequestToDB("GET", "health-article-post", response, `?q={"HealthArticlePostID": ${request_details_obj.selected_health_article_id}}`); 
-        });
-    }
-    // Status after testing: Working.
-    else if (request_url.pathname == "/add_new_health_article")
-    {
-        let request_body = "";
-
-        request.on("data", (chunk) =>
-        {
-            request_body += chunk;
-        });
-
-        request.on("end", () =>
-        {
-            let request_body_obj = ParseRequestBody(request_body);
-
-            if (request_body_obj == null)
-            {
-                return;
-            }
-
-            /*
-            if (CheckForRequiredFieldsInRequestBodyObj(request_body_obj, request_url.pathname).length > 0)
-            {
-                return;
-            }
-            */
-
-            // console.log("Request body obj in JSON format: " + JSON.stringify(request_body_obj));
-
-            SendRequestToDB("POST", "health-article-post", response, "", request_body_obj);
-        });
-    }
-    // Status after testing: Working.
-    else if (request_url.pathname == "/update_health_article")
-    {
-        let request_body_str = "";
-
-        request.on("data", (chunk) =>
-        {
-            request_body_str += chunk;
-        });
-
-        request.on("end", () =>
-        {
-            let request_body_obj = ParseRequestBody(request_body_str);
-
-            if (request_body_obj == null)
-            {
-                return;
-            }
-
-            QueryDB("GET", "health-article-post", `?q={"HealthArticlePostID": ${request_body_obj.HealthArticlePostID}}`, "", (error, responseObj, body_obj_arr) =>
-            {
-                if (error != null)
+                if (request_body_obj == null)
                 {
-                    throw new Error(error);
+                    return;
                 }
 
-                body_obj_arr = JSON.parse(body_obj_arr);
+                let query_str = "?q=";
 
-                let health_article_post_db_sys_id = body_obj_arr[0]._id;
+                query_str += JSON.stringify(request_body_obj);
 
-                // console.log("QueryDB result body value: " + body_obj_arr);
+                SendRequestToDB("GET", selected_table_name, response, query_str, null);
+                });
+        }
+        // Status after testing: Working.
+        else if (selected_action == "add")
+        {
+            let request_body_str = "";
 
-                // console.log("QueryDB result body stringified value: " + JSON.stringify(body_obj_arr));
-
-                // console.log("Request body obj JSON string value: " + JSON.stringify(request_body_obj));
-
-                SendRequestToDB("PUT", "health-article-post", response, `/${health_article_post_db_sys_id}`, request_body_obj);
+            request.on("data", (chunk) =>
+            {
+                request_body_str += chunk;
             });
-        });
+
+            request.on("end", () =>
+            {
+                let request_body_obj = ParseRequestBody(request_body_str, response);
+
+                if (request_body_obj == null)
+                {
+                    return;
+                }
+
+                SendRequestToDB("POST", selected_table_name, response, "", request_body_obj);
+            });
+        }
+        // Status after testing: Working.
+        else if (selected_action == "update")
+        {
+            let request_body_str = "";
+
+            request.on("data", (chunk) =>
+            {
+                request_body_str += chunk;
+            });
+
+            request.on("end", () =>
+            {
+                let request_body_obj = ParseRequestBody(request_body_str, response);
+
+                if (request_body_obj == null)
+                {
+                    return;
+                }
+
+                let selected_table_main_id_attrib_name = DeriveStandardIdentifierAttribNameFromTableName(selected_table_name);
+
+                // console.log("selected_table_main_id_attrib_name value: " + selected_table_main_id_attrib_name);
+
+                QueryDB("GET", selected_table_name, `?q={"${selected_table_main_id_attrib_name}": ${request_body_obj[selected_table_main_id_attrib_name]}}`, "", (error, responseObj, body_obj_arr) =>
+                {
+                    if (error != null)
+                    {
+                        throw new Error(error);
+                    }
+
+                    body_obj_arr = JSON.parse(body_obj_arr);
+
+                    let selected_record_db_sys_id = body_obj_arr[0]._id;
+
+                    // console.log("QueryDB result body value: " + body_obj_arr);
+
+                    // console.log("QueryDB result body stringified value: " + JSON.stringify(body_obj_arr));
+
+                    // console.log("Request body obj JSON string value: " + JSON.stringify(request_body_obj));
+
+                    SendRequestToDB("PUT", selected_table_name, response, `/${selected_record_db_sys_id}`, request_body_obj);
+                });
+            });
+        }
+        // Status after testing: Working.
+        else if (selected_action == "delete")
+        {
+            let request_body_str = "";
+
+            request.on("data", (chunk) =>
+            {
+                request_body_str += chunk;
+            });
+
+            request.on("end", () =>
+            {
+                let request_body_obj = ParseRequestBody(request_body_str, response);
+
+                if (request_body_obj == null)
+                {
+                    return;
+                }
+
+                let query_str = "/*?q=";
+
+                query_str += JSON.stringify(request_body_obj);
+
+                SendRequestToDB("DELETE", selected_table_name, response, query_str, null);
+            });
+        }
     }
     // Procedure for handling requests for files (e.g. HTML files, CSS files and JS files) for 
     // a webpage when it is being loaded.
     // Sample request url for a file named 'script.js': /script.js
     // Status after testing: Working.
-    else
+    else if (request.url.split(".").length == 2)
     {
         // console.log(`Handling request for file with name '${request.url.replace("/", "")}'.`);
 
@@ -393,6 +484,24 @@ function HandleRequest(request, response)
         {
             response.writeHead(200, {"Content-Type" : "application/javascript"});
         }
+        else if (file_extension == "ico")
+        {
+            let favicon_ico_file_read_stream = FileSystem.createReadStream(favicon_ico_file_path);
+
+            favicon_ico_file_read_stream.on("open", () =>
+            {
+                response.writeHead(200, {"Content-Type" : "image/ico"});
+
+                favicon_ico_file_read_stream.pipe(response);
+            });
+
+            favicon_ico_file_read_stream.on("error", (error) =>
+            {
+                response.writeHead(404, {"Content-Type" : "text/html"});
+
+                response.write("Status: Not Found.");
+            });
+        }
 
         corresponding_file_path = SearchAllDirsForFile(request.url.replace("/", ""), current_working_dir_path);
 
@@ -408,6 +517,13 @@ function HandleRequest(request, response)
         }
 
         response.end();
+    }
+    // Procedure for handling other requests which do not have procedures implemented for them yet
+    // or are invalid or unrecognized by the server.
+    // Status after testing: Working.
+    else
+    {
+        SendStatusCode400Response(response, "Bad Request. An unrecognized/invalid request was sent to the server.");
     }
 }
 
