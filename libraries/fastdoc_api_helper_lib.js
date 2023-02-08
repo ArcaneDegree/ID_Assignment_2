@@ -115,8 +115,6 @@ function SendRequestToDB(selected_method, selected_table_name, selected_query, s
 
     db_request.setRequestHeader("cache-control", "no-cache");
 
-    db_request.setRequestHeader("Origin", "https://arcanedegree.github.io");
-
     db_request.send(selected_body_obj);
 }
 
