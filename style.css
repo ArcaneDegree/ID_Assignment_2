@@ -548,7 +548,7 @@ span
     border: 1px solid silver;
   }
   form .data input:focus{
-    border-color: #3498db;
+    border-color: #0b1f2d;
     border-bottom-width: 2px;
   }
   form .forgot-pass{
@@ -574,8 +574,8 @@ span
     position: absolute;
     left: -100%;
     z-index: -1;
-    background: -webkit-linear-gradient(right, #56d8e4, #9f01ea, #56d8e4, #9f01ea);
-    transition: all 0.4s;
+    background: -webkit-linear-gradient(right, #81ff4f, #161313, #68ff2c, #111010);
+    transition: all 1.4s;
   }
   form .btn:hover .inner{
     left: 0;
