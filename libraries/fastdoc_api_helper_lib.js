@@ -115,6 +115,10 @@ function SendRequestToDB(selected_method, selected_table_name, selected_query, s
 
     db_request.setRequestHeader("cache-control", "no-cache");
 
+    db_request.setRequestHeader("Access-Control-Allow-Origin", "https://arcanedegree.github.io/ID_Assignment_2/");
+    
+    db_request.setRequestHeader('Access-Control-Allow-Credentials', true);
+
     db_request.send(selected_body_obj);
 }
 
