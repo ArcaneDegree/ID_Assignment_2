@@ -62,4 +62,11 @@ function SendTestRequestToServer(selected_method, selected_url_path, selected_bo
         test_request.send();
     }
 }
+
+QueryDB("member", "get_all", null, (request_obj) =>
+{
+    console.log("Response status code: " + request_obj.status);
+
+    console.log("Response received: " + request_obj.responseText);
+});
 // End of backend testing part
