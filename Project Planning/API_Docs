@@ -3,43 +3,19 @@
 [logo]: /favicon_io/android-chrome-192x192.png "Logo Title Text 2"
 # FastDoc API Documentation
 
-<b>Functions related to the 'member' table:</b>
-1. <b>get_members_data</b> (Implemented)
-    - URL path: /get_members_data
-    - Request method: GET
-
-<b>Functions related to the 'health-article-post' table:</b>
-1. <b>get_all_health_articles</b> (Implemented)
-    - URL path: /get_all_health_articles
-    - Request method: GET
-
-1. <b>get_health_article</b> (Implemented)
-    - URL path: /get_health_article
-    - Request body must have the following attributes: HealthArticlePostID AND/OR Title
-    - Request method: GET
-
-1. <b>add_health_article</b> (Implemented)
-    - URL path: /add_health_article
-    - Request body must have the following attributes: Title AND Content
-    - Request method: POST
-
-1. <b>update_health_article</b> (Implemented)
-    - URL path: /update_health_article
-    - Request body must have the following attributes: HealthArticlePostID AND Title AND Content
-    - Request method: PUT
-
-1. <b>delete_health_article</b> (Implemented)
-    - URL path: /delete_health_article
-    - Request body must have the following attributes: HealthArticlePostID AND/OR Title
-    - Request method: DELETE
+<b>Functions that can be called:</b>
+<br>
+1. SendRequestToServer()
 
 <br>
 <b>Calling convention for API:</b><br>
 URL path format: /fastdoc/[table_name]/[action]<br>
+<br>
 Example:<br>
 
 > /fastdoc/member/add<br>
 
+<br>
 A request with this URL will add a new record to the 'member' table/collection in the RestDB database.<br>
 <br>
 <b>List of actions that can be used in request URLs:</b>
@@ -63,4 +39,12 @@ A request with this URL will add a new record to the 'member' table/collection i
 1. transaction
 1. consultation
 <br>
+
+<b>Actions</b>
+- get_all
+    - Gets all the records from a selected table in the database.
+    - No request body needs to be included when a request with this action is sent.
+- get
+    - Gets a record or multiple records from a selected table in the database that have the same attributes and values as the object included in the request body.
+    - Required request body: An Object containing the fields and values (not all fields are required) of the collection that you are trying to retrieve from the database.
 

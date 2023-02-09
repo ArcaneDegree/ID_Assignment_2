@@ -1,0 +1,42 @@
+[
+	{
+		"MemberID": 0,
+		"Name": "Larissa Shum",
+		"Passwd": "a,",
+		"EmailAddress": "vitae@yahoo.couk",
+		"PrivilegeType": 1,
+		"CurrentStatus": 0
+	},
+	{
+		"MemberID": 1,
+		"Name": "Damon Pok",
+		"Passwd": "ipsum.",
+		"EmailAddress": "turpis@outlook.edu",
+		"PrivilegeType": 1,
+		"CurrentStatus": 1
+	},
+	{
+		"MemberID": 2,
+		"Name": "Damian Soh",
+		"Passwd": "nunc",
+		"EmailAddress": "a.arcu@icloud.ca",
+		"PrivilegeType": 1,
+		"CurrentStatus": 1
+	},
+	{
+		"MemberID": 3,
+		"Name": "Julian Ee",
+		"Passwd": "a",
+		"EmailAddress": "ultricies.adipiscing@google.org",
+		"PrivilegeType": 1,
+		"CurrentStatus": 1
+	},
+	{
+		"MemberID": 4,
+		"Name": "Chaim Soh",
+		"Passwd": "dapibus",
+		"EmailAddress": "nisl.sem.consequat@google.couk",
+		"PrivilegeType": 1,
+		"CurrentStatus": 0
+	}
+]
