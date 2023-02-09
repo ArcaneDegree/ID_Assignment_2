@@ -141,9 +141,9 @@ function LoadFastDocAPI()
     }
 
     // Just like in the SendRequestToRestDB function, the callback function passed into
-    // the QueryDB function must have the following parameters:
+    // the QueryRestDB function must have the following parameters:
     // 1.) request (type: XMLHttpRequest)
-    function QueryDB(selected_table_name, selected_action, request_body_obj, callback_function)
+    function QueryRestDB(selected_table_name, selected_action, request_body_obj, callback_function)
     {
         // Status after testing: Working.
         if (selected_action == "get_all")
@@ -187,9 +187,9 @@ function LoadFastDocAPI()
 
                 let selected_record_db_sys_id = body_obj_arr[0]._id;
 
-                // console.log("QueryDB result body value: " + body_obj_arr);
+                // console.log("QueryRestDB result body value: " + body_obj_arr);
 
-                // console.log("QueryDB result body stringified value: " + JSON.stringify(body_obj_arr));
+                // console.log("QueryRestDB result body stringified value: " + JSON.stringify(body_obj_arr));
 
                 // console.log("Request body obj JSON string value: " + JSON.stringify(request_body_obj));
 
@@ -213,7 +213,7 @@ function LoadFastDocAPI()
         // Status after testing: Pending.
         else
         {
-            console.log("Error in QueryDB function: Invalid/unsupported action passed into QueryDB function.");
+            console.log("Error in QueryRestDB function: Invalid/unsupported action passed into QueryRestDB function.");
         }
     }
 
@@ -287,6 +287,7 @@ function LoadFastDocAPI()
     return {
         LocalDBCommand: LocalDBCommand,
         SendRequestToServerLocalDB: SendRequestToServerLocalDB,
-        AddNewMember: AddNewMember
+        AddNewMember: AddNewMember,
+        QueryRestDB: QueryRestDB
     };
 }
