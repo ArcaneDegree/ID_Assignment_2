@@ -7,6 +7,11 @@
     box-sizing: border-box;
     
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
     background: #fefefe;
 }
@@ -21,11 +26,12 @@ header {
     position: fixed;
     top: 0;
     transition: all 0.15s linear; 
+    z-index: 3;
+   
 }
 header.active {
-    box-shadow: 0 0 10px rgba(9, 255, 0, 0.4);   
+    box-shadow: #a993ff
 }
-
 .logo {
     font-size: 28px;
     font-weight: bold;
@@ -156,9 +162,15 @@ nav ul li button
 }
 }
 
+/* Login form */
+
 #login-form
 {
     display: none;
+    overflow: auto;
+    position: fixed;
+    border-radius: 8px;
+    z-index: 2;
 }
 .form-box
 {
@@ -266,7 +278,14 @@ span
 	color:white;
 	font-size: 15;
 }
+
+
 /* About Us*/   
+
+h1 {
+  color:#434343;
+}
+
 
 .about-section{
     background: url(/images/pexels-evg-kowalievska-1170979.jpg) no-repeat left;
@@ -321,15 +340,186 @@ span
 }
 
 
+/* Services */
+
+#servicetop {
+  padding-top: 50px;
+    margin-top: -50px;
+}
+
+.service-title {
+  text-align: center;
+  margin: 40px 0 30px 0;
+  font-size: 40px;
+  color:#434343;
+}
+.services{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  color: #434343;
+}
+
+.service{
+  width: calc(33% - 20px);
+  text-align: center;
+  border: 1px solid #6ab04c;
+  border-radius: 6px;
+  margin: 10px 0 40px 0;
+  padding: 40px 20px;
+  color: #000000;
+  cursor: pointer;
+  transition: .3s linear;
+}
+
+.service .icon{
+  color: #6ab04c;
+  font-size: 40px;
+  margin-bottom: 20px;
+  transition: .3s linear;
+}
+
+.service h4{
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+.service:hover{
+  background-color:#000000;
+  color:#ffffff
+}
+
+.service:hover .icon{
+  color: #68ff2c;
+}
+
+/* */
+/* Our Doctors*/
+/* */
+
+#doctorstop {
+  padding-top: 50px;
+    margin-top: -50px;
+}
+
+
+.doctorintro {
+  background-color:#f1f1f1;
+  padding-bottom: 40px;
+}
+
+
+h3 {
+  text-align:center
+}
+
+.role {
+  text-align:center;
+  text-transform: uppercase;
+}
+
+.row1 {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 2em 1em;
+  text-align: center;
+  margin-top: -40px;
+}
+.column {
+  width: 100%;
+  padding: 0.5em 0;
+}
+h5 {
+  width: 100%;
+  text-align: center;
+  font-size: 40px;
+  color: #434343;
+  margin: 60px 0 -10px 0;
+}
+.card {
+  box-shadow: 0 0 2.4em rgba(25, 0, 58, 0.1);
+  padding: 3.5em 1em;
+  border-radius: 0.6em;
+  color: #1f003b;
+  cursor: pointer;
+  transition: 0.3s;
+  background-color: #ffffff;
+}
+.card .img-container {
+  width: 8em;
+  height: 8em;
+  background-color: #a993ff;
+  padding: 0.5em;
+  border-radius: 50%;
+  margin: 0 auto 2em auto;
+}
+.card img {
+  width: 100%;
+  border-radius: 50%;
+}
+.card h3 {
+  font-weight: 500;
+}
+.card p {
+  font-weight: 300;
+  text-transform: uppercase;
+  margin: 0.5em 0 2em 0;
+  letter-spacing: 2px;
+}
+.icons {
+  width: 50%;
+  min-width: 180px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+}
+.card a {
+  text-decoration: none;
+  color: inherit;
+  font-size: 1.4em;
+  transition: all 0.4s ease;
+}
+.card:hover {
+  background: linear-gradient(#6045ea, #8567f7);
+  color: #ffffff;
+}
+.card:hover .img-container {
+  transform: scale(1.15);
+  z-index: -10;
+  transition: 0.4s;
+}
+@media screen and (min-width: 768px) {
+  section {
+    padding: 1em 7em;
+  }
+}
+@media screen and (min-width: 992px) {
+  section {
+    padding: 1em;
+  }
+  .card {
+    padding: 5em 1em;
+  }
+  .column {
+    flex: 0 0 33.33%;
+    max-width: 33.33%;
+    padding: 0 1em;
+  }
+}
+
+
 
 
 /* Reviews */
+
 
 .reviews {
     padding: 40px 0;
     background: #f1f1f1;
     color: #434343;
     text-align: center;
+    margin-top: 80px;
+    font-size: 20px;
   }
   .inner {
     max-width: 1200px;
@@ -355,6 +545,7 @@ span
     max-width: 33.33%;
     box-sizing: border-box;
     padding: 15px;
+    
   }
   .review {
     background: #fff;
@@ -602,14 +793,15 @@ span
   form .signup-link a:hover{
     text-decoration: underline;
   }
-
+/* */
   /* Footer */
+/* */
 
-.container{
+.containerfooter{
 	max-width: 1170px;
 	margin:auto;
 }
-  .row{
+  .row2{
 	display: flex;
 	flex-wrap: wrap;
 }
@@ -617,14 +809,14 @@ ul{
 	list-style: none;
 }
 .footer{
-	background-color: #24262b;
+	background-color:rgb(0, 0, 0);
     padding: 70px 0;
 }
 .footer-col{
    width: 25%;
    padding: 0 15px;
 }
-.footer-col h4{
+.footer-col h6{
 	font-size: 18px;
 	color: #ffffff;
 	text-transform: capitalize;
