@@ -154,10 +154,12 @@ FastDocAPI.SendRequestToServerLocalDB("single", [
 FastDocAPI.AddNewMember("Carl Jung", "interestingpassword55473", "carl_jung@gmail.com");
 */
 
+/*
 FastDocAPI.QueryRestDB("member", "get_all", "", (request_obj) =>
 {
   console.log("Response status code: " + request_obj.status);
 
   console.log("Response received: " + request_obj.responseText);
 });
+*/
 // End of backend testing part
