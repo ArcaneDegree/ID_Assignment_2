@@ -113,6 +113,35 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 
+let login_submission_btn = document.getElementById("login_submission_btn");
+
+let email_address_input_box = document.getElementById("email_address_input_box");
+
+let passwd_input_box = document.getElementById("passwd_input_box");
+
+login_submission_btn.onclick = function()
+{
+  FastDocAPI.GetMembers(
+    [
+      `EmailAddress = '${email_address_input_box.textContent}'`,
+      `Passwd = '${passwd_input_box.textContent}'`
+    ],
+    (request_obj) =>
+    {
+      let member_obj_arr = JSON.parse(request_obj.responseText);
+
+      if (member_obj_arr.length == 0)
+      {
+        // Login unsuccessful.
+      }
+      else
+      {
+        // Login successful
+      }
+    }
+  );
+}
+
 
 // Loader
 

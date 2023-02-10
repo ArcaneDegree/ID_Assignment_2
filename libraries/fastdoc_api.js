@@ -479,30 +479,8 @@ function LoadFastDocAPI()
 
     // Status after testing: Working.
     // Note: For any of the parameters in this function, if not applicable, pass in null.
-    function GetMembers(selected_member_id, selected_member_name, selected_member_email_address, response_received_callback_function)
+    function GetMembers(filter_arr, response_received_callback_function)
     {
-        if (selected_member_id == null && selected_member_name == null && selected_member_email_address == null)
-        {
-            return;
-        }
-
-        let filter_arr = [];
-
-        if (selected_member_id != null)
-        {
-            filter_arr.push(`MemberID = ${selected_member_id}`);
-        }
-
-        if (selected_member_name != null)
-        {
-            filter_arr.push(`Name = '${selected_member_name}'`);
-        }
-
-        if (selected_member_email_address != null)
-        {
-            filter_arr.push(`EmailAddress = '${selected_member_email_address}'`);
-        }
-
         let result_filter_statement_str = GetFilterStatementStrFromFilterArr(filter_arr);
 
         // console.log("Result filter statement string from GetMembers: " + result_filter_statement_str);
