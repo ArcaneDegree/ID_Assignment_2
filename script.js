@@ -1,5 +1,7 @@
 // const { request, get } = require("http");
 
+
+
 // Add shadow on header while scrolling
 
 $(window).scroll(function() {     
@@ -47,7 +49,7 @@ function smoothScrollBackToTop() {
   const targetPosition = 0;
   const startPosition = window.pageYOffset;
   const distance = targetPosition - startPosition;
-  const duration = 750;
+  const duration = 75;
   let start = null;
   
   window.requestAnimationFrame(step);
@@ -99,6 +101,47 @@ var x=document.getElementById('login');
                 modal.style.display = "none";
             }
         }        
+
+
+// Login form
+
+document.addEventListener("DOMContentLoaded", function() {
+  const closeBtn = document.querySelector(".close-btn");
+  closeBtn.addEventListener("click", function() {
+    const loginForm = document.getElementById("login-form");
+    loginForm.style.display = "none";
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Swiper for Doctors :(
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // For backend testing purposes only (Do not remove this, if necessary, you may comment this part out)
 // Start of backend testing part
