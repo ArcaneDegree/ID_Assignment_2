@@ -1,9 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600&display=swap');
+
+
 * {
     margin: 0;
     padding: 0;
     list-style: none;
     text-decoration: none;
-    font-family:'Franklin Gothic medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
     box-sizing: border-box;
     
 }
@@ -118,18 +121,14 @@ header.active {
 .motto {
     display: block;
     text-align: center;
-    margin: 160px 80px 80px 80px;
+    margin: 120px 80px 60px 80px;
     font-size: 40px;
     max-width:100%;
-}    
-/* image (might not be used) */
-.bg {
-    background-position: center center;
-    background-size: cover;
-    text-align: center;
-    background-image: url(/images/pexels-evg-kowalievska-1170979.jpg)
-}    
+    color:#000000
+    
 }
+
+}    
 
 nav ul li button
 {
@@ -142,7 +141,7 @@ nav ul li button
     width: 30px;
     height: 3px;
     margin-top: 9px;
-    font-family:'Franklin Gothic medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 @media (min-width: 900px) {
@@ -158,8 +157,9 @@ nav ul li button
     height: 3px;
     margin-left: 28px;
     margin-top: 9px;
-    font-family:'Franklin Gothic medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
+
 }
 
 /* Login form */
@@ -253,13 +253,7 @@ nav ul li button
 {
 	margin: 30px 10px 34px 0;
 }
-span
-{
-	color:#777;
-	font-size:12px;
-	bottom:68px;
-	position:absolute;
-}
+
 #login
 {
 	left:50px;
@@ -288,7 +282,8 @@ h1 {
 
 
 .about-section{
-    background: url(/images/pexels-evg-kowalievska-1170979.jpg) no-repeat left;
+    
+  background: url(/images/pexels-evg-kowalievska-1170979.jpg) no-repeat left;
     background-size: 55%;
     background-color: #000000;
     overflow: hidden;
@@ -303,13 +298,16 @@ h1 {
     background-color: #ffffff;
     padding: 150px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    
+    flex-direction: row;
+
 }
 
 .inner-container h1{
     margin-bottom: 30px;
+    margin-right:10px;
     font-size: 30px;
     font-weight: 900;
+    flex-direction: column;
 }
 
 
@@ -341,6 +339,7 @@ h1 {
 
 
 /* Services */
+
 
 #servicetop {
   padding-top: 50px;
@@ -793,6 +792,142 @@ h5 {
   form .signup-link a:hover{
     text-decoration: underline;
   }
+
+/* Articles*/
+
+
+#articlestop {
+  scroll-margin-top: 80px;
+}
+
+/* .center2 {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  
+} */
+
+
+#articles {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 40px;
+  border-bottom: 1px solid rgba(0,0,0,0.5);
+  background-color:#ffffff
+}
+
+.articles-heading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 40px;
+  color:#434343;
+
+}
+
+.articles-heading span {
+  color:#4415b0
+}
+
+.articles-heading h3 {
+  font-size: 40px;
+  color: #434343
+}
+
+.articles-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0px;
+  flex-wrap: wrap;
+}
+
+.articles-box {
+  width: 350px;
+  background-color: #ffffff;
+  border: 1px solid #ececec;
+  
+}
+
+.articles-img {
+  width: 100%;
+  height: 100%;
+  object-position: center;
+}
+
+.articles-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.articles-text {
+  padding:30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.articles-text span {
+  color:#f33c3c;
+  font-size: 0.9rem; /**/
+}
+
+.articles-text .articles-title {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color:#272727;
+}
+
+.articles-text .articles-title:hover {
+  color:#f33c3c;
+  transition: all ease 0.4s;
+}
+
+.blog-text p {
+  color: #9b9b9b;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-line-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 20px 0px;
+}
+
+.blog-text a {
+  color: #0f0f0f;
+}
+
+.blog-text a:hover {
+  color:#f33c3c;
+  transition: all ease 0.4s;
+}
+
+@media(max-width:1250px) {
+  .articles-box {
+    width: 300px;
+  }
+}
+
+@media(max-width: 1100px) {
+  .articles-box {
+    width: 70%
+  }
+}
+
+@media(max-width: 550px) {
+  .articles-box {
+    margin: 20px 10px;
+    width: 100%
+  }
+  #articles {
+    padding: 10px;
+  }
+}
+
 /* */
   /* Footer */
 /* */
@@ -880,3 +1015,20 @@ ul{
     width: 100%;
 }
 }
+
+/* Lottie animations*/
+
+.inner-container lottie-player {
+  margin: 0 0 -30px 140px;
+}
+
+.inner-width lottie-player {
+  margin: 0 48% -25px 48%;
+}
+
+.row1 lottie-player {
+  margin: 0 48% -60px 48%;
+}
+
+
+
