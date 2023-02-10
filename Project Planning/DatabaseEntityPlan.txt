@@ -4,15 +4,16 @@ the single quotation marks).
 // High priority
 Member
 -> MemberID => int (Primary Key)
--> Name => varchar(100)
+-> Name => varchar(200)
 -> Passwd => varchar(100)
 -> EmailAddress => varchar(200)
 -> PrivilegeType => int
--> DateTimeJoined => datetime
 -> CurrentStatus => int
 
 /*
 Notes:
+The DateTimeJoined datetime attribute has been removed.
+
 Passwords will be encrypted on the server side. Symmetric encryption will be used. 
 The cryptography method that would be used for the encryption is to be decided.
 
@@ -51,13 +52,17 @@ represents a dislike.
 HealthArticleComment
 -> HealthArticleCommentID => int (Primary Key)
 -> MemberID => int (Foreign Key REFERENCES Member.MemberID)
--> CreationDateTime => datetime
 -> Content => varchar(8000)
+
+/*
+Notes:
+The CreationDateTime datetime attribute has been removed.
+*/
 
 // High priority
 Doctor
 -> DoctorID => int (Primary Key)
--> Name => varchar(100)
+-> Name => varchar(200)
 -> EmailAddress => varchar(200)
 -> Specialization => varchar(200)
 -> Description => varchar(1000)
@@ -68,11 +73,12 @@ DoctorReview
 -> ReviewingMemberID => int (Foreign Key REFERENCES Member.MemberID)
 -> ReviewedDoctorID => int (Foreign Key REFERENCES Doctor.DoctorID)
 -> ReviewStarCount => int
--> CreationDateTime => datetime
 -> Content => varchar(8000)
 
 /*
 Notes:
+The CreationDateTime datetime attribute has been removed.
+
 The value of the ReviewStarCount attribute must only be a value ranging from 0 to 5.
 */
 
@@ -81,11 +87,11 @@ AppointmentBooking
 -> AppointmentBookingID => int (Primary Key)
 -> BookingMemberID => int (Foreign Key REFERENCES Member.MemberID)
 -> BookedDoctorID => int (Foreign Key REFERENCES Doctor.DoctorID)
--> AppointmentBookingCreationDateTime => datetime
--> AppointmentDateTime => datetime
+-> AppointmentBookingCreationDateTime => varchar(100)
+-> AppointmentDateTime => varchar(100)
 
 // High priority
-Transaction
+FastDocTransaction
 -> TransactionID => int (Primary Key)
 -> OriginMemberID => int (Foreign Key REFERENCES Member.MemberID)
 -> AssociatedAppointmentBookingID => int (Foreign Key REFERENCES AppointmentBooking.AppointmentBookingID)
@@ -94,6 +100,10 @@ Transaction
 
 /*
 Notes:
+The name of this entity was changed from "Transaction" to "FastDocTransaction" due to "Transaction"
+being a reserved keyword in SQLite, which caused issues when creating this table in the SQLite database.
+The table storing transaction data in the RestDB database is still named "Transaction" however.
+
 The OriginMemberID attribute stores the ID of the member who performed the transaction.
 
 The value of the TransactionMethod attribute must be a value found in the TransactionMethod 
@@ -109,3 +119,4 @@ Consultation
 -> ConsultingMemberID => int (Foreign Key REFERENCES Member.MemberID)
 -> ConsultantDoctorID => int (Foreign Key REFERENCES Doctor.DoctorID)
 -> AssociatedAppointmentBookingID => int (Foreign Key REFERENCES AppointmentBooking.AppointmentBookingID)
+

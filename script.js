@@ -1,4 +1,4 @@
-// const { request, get } = require("http");
+const FastDocAPI = LoadFastDocAPI();
 
 
 
@@ -71,9 +71,9 @@ function easeInOutCubic(t, b, c, d) {
 
 // Navigation bar
 
-swift = document.querySelector(".swift");
+let swift = document.querySelector(".swift");
 swift.onclick = function() {
-    navBar = document.querySelector(".nav-bar");
+    let navBar = document.querySelector(".nav-bar");
     navBar.classList.toggle("active");
 }
 
@@ -145,9 +145,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // For backend testing purposes only (Do not remove this, if necessary, you may comment this part out)
 // Start of backend testing part
+/*
 function SendTestRequestToServer(selected_method, selected_url_path, selected_body_str = "")
 {
-    test_request = new XMLHttpRequest();
+    let test_request = new XMLHttpRequest();
 
     test_request.onreadystatechange = function()
     {
@@ -174,11 +175,34 @@ function SendTestRequestToServer(selected_method, selected_url_path, selected_bo
         test_request.send();
     }
 }
+*/
 
-QueryDB("member", "get_all", null, (request_obj) =>
+/*
+FastDocAPI.SendRequestToServerLocalDB("single", [
+  new FastDocAPI.LocalDBCommand(
+    "SELECT * FROM Member",
+    [],
+    null
+  )
+],
+(request_obj) =>
 {
-    console.log("Response status code: " + request_obj.status);
+  console.log("Response status code: " + request_obj.status);
 
-    console.log("Response received: " + request_obj.responseText);
+  console.log("Response received: " + request_obj.responseText);
 });
+*/
+
+/*
+FastDocAPI.AddNewMember("Carl Jung", "interestingpassword55473", "carl_jung@gmail.com");
+*/
+
+/*
+FastDocAPI.QueryRestDB("member", "get_all", "", (request_obj) =>
+{
+  console.log("Response status code: " + request_obj.status);
+
+  console.log("Response received: " + request_obj.responseText);
+});
+*/
 // End of backend testing part
