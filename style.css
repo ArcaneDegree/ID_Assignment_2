@@ -1,9 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600&display=swap');
+
+
 * {
     margin: 0;
     padding: 0;
     list-style: none;
     text-decoration: none;
-    font-family:'Franklin Gothic medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
     box-sizing: border-box;
     
 }
@@ -138,7 +141,7 @@ nav ul li button
     width: 30px;
     height: 3px;
     margin-top: 9px;
-    font-family:'Franklin Gothic medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 @media (min-width: 900px) {
@@ -154,7 +157,7 @@ nav ul li button
     height: 3px;
     margin-left: 28px;
     margin-top: 9px;
-    font-family:'Franklin Gothic medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 }
@@ -295,13 +298,16 @@ h1 {
     background-color: #ffffff;
     padding: 150px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    
+    flex-direction: row;
+
 }
 
 .inner-container h1{
     margin-bottom: 30px;
+    margin-right:10px;
     font-size: 30px;
     font-weight: 900;
+    flex-direction: column;
 }
 
 
@@ -333,6 +339,7 @@ h1 {
 
 
 /* Services */
+
 
 #servicetop {
   padding-top: 50px;
@@ -1008,4 +1015,20 @@ ul{
     width: 100%;
 }
 }
+
+/* Lottie animations*/
+
+.inner-container lottie-player {
+  margin: 0 0 -30px 140px;
+}
+
+.inner-width lottie-player {
+  margin: 0 48% -25px 48%;
+}
+
+.row1 lottie-player {
+  margin: 0 48% -60px 48%;
+}
+
+
 
