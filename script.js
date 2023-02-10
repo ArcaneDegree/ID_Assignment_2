@@ -136,7 +136,7 @@ login_submission_btn.onclick = function()
       }
       else
       {
-        // Login successful
+        // Login successful.
       }
     }
   );
