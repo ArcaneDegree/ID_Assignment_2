@@ -1,4 +1,4 @@
-//Note: The RestDB datetime format for all datetime attributes is 'DD/MM/YYYY hh:mm:ssa' (without
+//Note: The RestDB datetime format for all datetime attributes is 'DD/MM/YYYY hh:mm:ss' (without
 the single quotation marks).
 
 // High priority

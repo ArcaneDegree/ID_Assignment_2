@@ -135,7 +135,7 @@ function SendTestRequestToServer(selected_method, selected_url_path, selected_bo
 */
 
 /*
-FastDocAPI.SendRequestToServerLocalDB("single", [
+FastDocAPI.SendRequestToServerDB("single", [
   new FastDocAPI.LocalDBCommand(
     "SELECT * FROM Member",
     [],
@@ -161,5 +161,155 @@ FastDocAPI.QueryRestDB("member", "get_all", "", (request_obj) =>
 
   console.log("Response received: " + request_obj.responseText);
 });
+*/
+
+/*
+FastDocAPI.GetRowsFromServerDBTableWithFilter("Member", "MemberID = 2", (request_obj) =>
+{
+  console.log("Response status code: " + request_obj.status);
+
+  console.log("Response received: " + request_obj.responseText);
+});
+*/
+
+/*
+FastDocAPI.GetAllRowsFromServerDBTable("Member", (request_obj) =>
+{
+  console.log("Response status code: " + request_obj.status);
+
+  console.log("Response received: " + request_obj.responseText);
+});
+*/
+
+/*
+FastDocAPI.UpdateRowsInServerDBTableWithFilter("Member", "MemberID = 2 AND Name = 'Damon Pok'", "Name = 'Daemon Pock', Passwd = 'pwddaemon', EmailAddress = 'daemon_pock@outlook.edu'", (request_obj) =>
+{
+  console.log("Response status code: " + request_obj.status);
+
+  console.log("Response received: " + request_obj.responseText);
+});
+*/
+
+/*
+FastDocAPI.DeleteRowsInServerDBTableWithFilter("Member", "MemberID = 4 AND Name = 'Julian Ee' AND Passwd = 'a'", (request_obj) =>
+{
+  console.log("Response status code: " + request_obj.status);
+
+  console.log("Response received: " + request_obj.responseText);
+});
+*/
+
+/*
+let new_member_name = "John Lee";
+
+let new_member_passwd = "johnspw447d";
+
+let new_member_email_address = "john_lee@gmail.com";
+
+FastDocAPI.AddRowToServerDBTable("Member", "Name, Passwd, EmailAddress, PrivilegeType, CurrentStatus", `'${new_member_name}', '${new_member_passwd}', '${new_member_email_address}', 1, 0`, (request_obj) =>
+{
+  console.log("Response status code: " + request_obj.status);
+
+  console.log("Response received: " + request_obj.responseText);
+});
+*/
+
+/*
+FastDocAPI.AddNewMember("Steven Tan", "stevietnpwd", "steven_tan@gmail.com", (request_obj) =>
+{
+  console.log("Response status code: " + request_obj.status);
+
+  console.log("Response received: " + request_obj.responseText);
+});
+*/
+
+/*
+FastDocAPI.GetMembers(null, "Chaim Soh", "nisl.sem.consequat@google.couk", (request_obj) =>
+{
+  console.log("Response status code: " + request_obj.status);
+
+  console.log("Response received: " + request_obj.responseText);
+});
+*/
+
+/*
+FastDocAPI.UpdateMembers([
+  "MemberID = 6",
+  "Name = 'Carl Jung'",
+  "Passwd = 'interestingpassword55473'"
+],
+[
+  "Name = 'Carl Lim'",
+  "Passwd = 'carlspwd'",
+  "EmailAddress = 'carl_lim@gmail.com'"
+],
+(request_obj) =>
+{
+  console.log("Response status code: " + request_obj.status);
+
+  console.log("Response received: " + request_obj.responseText);
+});
+*/
+
+/*
+FastDocAPI.DeleteMembers(
+  [
+    "MemberID = 3",
+    "Name = 'Damian Soh'",
+    "Passwd = 'nunc'"
+  ],
+  (request_obj) =>
+  {
+    console.log("Response status code: " + request_obj.status);
+
+    console.log("Response received: " + request_obj.responseText);
+  }
+)
+*/
+
+/*
+FastDocAPI.AddAppointmentBooking(1, 1, "12/02/2023 15:00:00", (request_obj) =>
+{
+  console.log("Response status code: " + request_obj.status);
+
+  console.log("Response received: " + request_obj.responseText);
+});
+
+FastDocAPI.AddFastDocTransaction(1, 1, 100.55, FastDocAPI.TransactionMethod.Credit_Card, (request_obj) =>
+{
+  console.log("Response status code: " + request_obj.status);
+
+  console.log("Response received: " + request_obj.responseText);
+});
+*/
+
+/*
+FastDocAPI.DeleteAppointmentBooking(
+  [
+    "AppointmentBookingID = 1",
+    "AppointmentDateTime = '12/02/2023 15:00:00'",
+    "BookingMemberID = 1"
+  ],
+  (request_obj) =>
+  {
+    console.log("Response status code: " + request_obj.status);
+
+    console.log("Response received: " + request_obj.responseText);
+  }
+);
+
+FastDocAPI.DeleteFastDocTransaction(
+  [
+    "TransactionID = 1",
+    "OriginMemberID = 1",
+    "TransactionAmount = 100.55"
+  ],
+  (request_obj) =>
+  {
+    console.log("Response status code: " + request_obj.status);
+
+    console.log("Response received: " + request_obj.responseText);
+  }
+);
 */
 // End of backend testing part

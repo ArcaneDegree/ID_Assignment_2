@@ -6,6 +6,11 @@ function LoadFastDocAPI()
 
     var current_working_dir_path = "";
 
+    const TransactionMethod = {
+        Credit_Card: 0,
+        Bank_Account: 1
+    }
+
     function GetCharCountInStr(str, selected_char)
     {
         let selected_char_occurrence_count = 0;
@@ -217,6 +222,7 @@ function LoadFastDocAPI()
         }
     }
 
+    // Status after testing: Working.
     // Constructor method for the LocalDBCommand class
     // Note: The callback function passed into the 3rd argument for this method must contain the following
     // parameters:
@@ -230,10 +236,12 @@ function LoadFastDocAPI()
         this.callback_func = new_callback_func;
     }
 
+    // Status after testing: Working.
+    // Note: This function is meant to serve as a base helper function as well.
     // Note: The callback function passed as the third argument into the this
     // function must have the following parameters:
     // 1. request (type: XMLHttpRequest)
-    function SendRequestToServerLocalDB(selected_command_execution_mode, new_command_obj_arr, response_received_callback_function)
+    function SendRequestToServerDB(selected_command_execution_mode, new_command_obj_arr, response_received_callback_function)
     {
         let request = new XMLHttpRequest();
 
@@ -243,7 +251,10 @@ function LoadFastDocAPI()
         {
             if (request.readyState == XMLHttpRequest.DONE)
             {
-                response_received_callback_function(request);
+                if (response_received_callback_function != null)
+                {
+                    response_received_callback_function(request);
+                }
             }
         }
 
@@ -253,41 +264,367 @@ function LoadFastDocAPI()
         }));
     }
 
-    function AddNewMember(new_member_name, new_member_passwd, new_member_email_address)
+    // Status after testing: Pending.
+    // Note: This function is meant to serve as a base helper function.
+    // Note: Format for filter statement: "{attribute}={value} AND {attribute}={value} AND..."
+    // If the data type of attribute is varchar() or anything related to text, ensure that
+    // its value is encased in single quotation marks (e.g. {attribute}='{value}').
+    function GetCommandStrWithFilterStatement(command_str, filter_statement_str)
     {
-        SendRequestToServerLocalDB("single",
+        let result_command_str = command_str;
+
+        if (filter_statement_str != "")
+        {
+            result_command_str += ` WHERE ${filter_statement_str}`;
+        }
+
+        return result_command_str;
+    }
+
+    // Status after testing: Working.
+    // Note: This function is meant to serve as a base helper function.
+    function GetFilterStatementStrFromFilterArr(filter_arr = [])
+    {
+        if (filter_arr == null)
+        {
+            filter_arr = [];
+        }
+
+        let result_filter_statement_str = "";
+
+        for (let current_filter_index = 0; current_filter_index < filter_arr.length; current_filter_index++)
+        {
+            result_filter_statement_str += `${filter_arr[current_filter_index]}`;
+
+            if (current_filter_index < filter_arr.length - 1)
+            {
+                result_filter_statement_str += ` AND `;
+            }
+        }
+
+        return result_filter_statement_str;
+    }
+
+    // Status after testing: Working.
+    // Note: This function is meant to serve as a base helper function.
+    function GetValuesStrFromValuesArr(values_arr)
+    {
+        if (values_arr == null)
+        {
+            values_arr = [];
+        }
+
+        let result_values_str = "";
+
+        for (let current_value_index = 0; current_value_index < values_arr.length; current_value_index++)
+        {
+            result_values_str += `${values_arr[current_value_index]}`;
+
+            if (current_value_index < values_arr.length - 1)
+            {
+                result_values_str += `, `;
+            }
+        }
+
+        return result_values_str;
+    }
+
+    // Status after testing: Pending.
+    // Note: This function is meant to serve as a base helper function.
+    // Note: The format for the datetime string returned is 'DD/MM/YYYY hh:mm:ss'.
+    function ConvertDateObjToStr(date_obj)
+    {
+        let date_year = date_obj.getFullYear();
+
+        let date_month = date_obj.getMonth() + 1;
+
+        let date_day = date_obj.getDate();
+
+        let date_hour = date_obj.getHours();
+
+        let date_minute = date_obj.getMinutes();
+
+        let date_second = date_obj.getSeconds();
+
+        return `${date_day}/${date_month}/${date_year} ${date_hour}:${date_minute}:${date_second}`;
+    }
+
+    // Status after testing: Pending.
+    // Note: This function is meant to serve as a base helper function.
+    // Note: The format for the datetime string passed into this function should be
+    // 'DD/MM/YYYY hh:mm:ss'.
+    function ConvertStrToDateObj(date_str)
+    {
+
+    }
+
+    // Status after testing: Working.
+    // Note: Values of attributes of d data type of varchar or anything related to text/strings
+    // must be encased/wrapped in single quotation marks (e.g. '{new varchar value}').
+    function AddRowToServerDBTable(selected_table_name, column_names, new_values, response_received_callback_function)
+    {
+        if (column_names == "" || new_values == "")
+        {
+            return;
+        }
+
+        let result_command_str = `INSERT INTO ${selected_table_name} (${column_names}) VALUES(${new_values});`;
+
+        // console.log("Result command string for adding new row: " + result_command_str);
+
+        SendRequestToServerDB("single",
         [
             new LocalDBCommand(
-                `INSERT INTO Member
-                (Name, Passwd, EmailAddress, PrivilegeType, CurrentStatus)
-                VALUES (
-                    '${new_member_name}',
-                    '${new_member_passwd}',
-                    '${new_member_email_address}',
-                    1,
-                    0
-                );`,
+                result_command_str,
                 [],
                 null
             )
         ],
-        (request_obj) =>
+        response_received_callback_function);
+    }
+
+    // Status after testing: Working.
+    // Note: This function is meant to serve as a base helper function as well.
+    // Note: Format for filter statement: "{attribute}={value} AND {attribute}={value} AND..."
+    // If the data type of attribute is varchar() or anything related to text, ensure that
+    // its value is encased in single quotation marks (e.g. {attribute}='{value}').
+    function GetRowsFromServerDBTableWithFilter(selected_table_name, filter_statement_str, response_received_callback_function)
+    {
+        // console.log("Filter statement string: " + filter_statement_str);
+
+        let result_command_str = GetCommandStrWithFilterStatement(`SELECT * FROM ${selected_table_name}`, filter_statement_str) + ";";
+
+        // console.log("Result command string: " + result_command_str);
+
+        SendRequestToServerDB("single",
+        [
+            new LocalDBCommand(
+                result_command_str,
+                [],
+                null
+            )
+        ],
+        response_received_callback_function);
+    }
+
+    // Status after testing: Working.
+    function GetAllRowsFromServerDBTable(selected_table_name, response_received_callback_function)
+    {
+        GetRowsFromServerDBTableWithFilter(selected_table_name, "", response_received_callback_function);
+    }
+
+    // Status after testing: Working.
+    // Format for updated_values_str parameter: {updated attribute}={updated value},{updated attribute}={updated value},...
+    // If the data type of attribute is varchar() or anything related to text, ensure that
+    // its value is encased in single quotation marks (e.g. {attribute}='{value}').
+    function UpdateRowsInServerDBTableWithFilter(selected_table_name, filter_statement_str, updated_values_str, response_received_callback_function)
+    {
+        if (updated_values_str == "")
         {
-            if (request_obj.status == 200)
-            {
-                console.log(`New member named '${new_member_name}' added to the server's local database successfully.`);
-            }
-            else
-            {
-                console.log(`An error occurred while attempting to add a new member named '${new_member_name}' to the server's local database. Response status code: ${request_obj.status}.`);
-            }
-        });
+            return;
+        }
+
+        let result_command_str = GetCommandStrWithFilterStatement(`UPDATE ${selected_table_name} SET ${updated_values_str}`, filter_statement_str) + ";";
+
+        SendRequestToServerDB("single", 
+        [
+            new LocalDBCommand(
+                result_command_str,
+                [],
+                null
+            )
+        ],
+        response_received_callback_function);
+    }
+
+    // Status after testing: Working.
+    function DeleteRowsInServerDBTableWithFilter(selected_table_name, filter_statement_str, response_received_callback_function)
+    {
+        let result_command_str = GetCommandStrWithFilterStatement(`DELETE FROM ${selected_table_name}`, filter_statement_str) + ";";
+
+        SendRequestToServerDB("single",
+        [
+            new LocalDBCommand(
+                result_command_str,
+                [],
+                null
+            )
+        ],
+        response_received_callback_function);
+    }
+
+    // Note: The implementations of these API functions work with the server's local database and
+    // not the remote RestDB database.
+    // Note: Restrictions imposed on new member registrations:
+    // 1.) New member's name cannot be the same as the names of other registered members.
+    // 2.) New member's email address cannot be the same as the email addresses of other registered
+    // members.
+    // Note: datetime format for all datetime attributes is 'DD/MM/YYYY hh:mm:ss'.
+    
+    // API functions for working with the Member table.
+    
+    // Status after testing: Working.
+    function AddNewMember(new_member_name, new_member_passwd, new_member_email_address, response_received_callback_function = null)
+    {
+        AddRowToServerDBTable(
+        "Member",
+        "Name, Passwd, EmailAddress, PrivilegeType, CurrentStatus",
+        `'${new_member_name}',
+        '${new_member_passwd}',
+        '${new_member_email_address}',
+        1,
+        0`,
+        response_received_callback_function);
+    }
+
+    // Status after testing: Working.
+    // Note: For any of the parameters in this function, if not applicable, pass in null.
+    function GetMembers(selected_member_id, selected_member_name, selected_member_email_address, response_received_callback_function)
+    {
+        if (selected_member_id == null && selected_member_name == null && selected_member_email_address == null)
+        {
+            return;
+        }
+
+        let filter_arr = [];
+
+        if (selected_member_id != null)
+        {
+            filter_arr.push(`MemberID = ${selected_member_id}`);
+        }
+
+        if (selected_member_name != null)
+        {
+            filter_arr.push(`Name = '${selected_member_name}'`);
+        }
+
+        if (selected_member_email_address != null)
+        {
+            filter_arr.push(`EmailAddress = '${selected_member_email_address}'`);
+        }
+
+        let result_filter_statement_str = GetFilterStatementStrFromFilterArr(filter_arr);
+
+        // console.log("Result filter statement string from GetMembers: " + result_filter_statement_str);
+
+        GetRowsFromServerDBTableWithFilter("Member", result_filter_statement_str, response_received_callback_function);
+    }
+
+    // Status after testing: Working.
+    // Note: For any of the parameters in this function, if not applicable, pass in null.
+    function UpdateMembers(filter_arr, updated_values_arr, response_received_callback_function)
+    {
+        let result_filter_statement_str = GetFilterStatementStrFromFilterArr(filter_arr);
+
+        let result_updated_values_str = GetValuesStrFromValuesArr(updated_values_arr);
+
+        // console.log("Result updated values string in UpdateMembers: " + result_updated_values_str);
+
+        UpdateRowsInServerDBTableWithFilter("Member", result_filter_statement_str, result_updated_values_str, response_received_callback_function);
+    }
+
+    // Status after testing: Working.
+    function DeleteMembers(filter_arr, response_received_callback_function)
+    {
+        let filter_statement_str = GetFilterStatementStrFromFilterArr(filter_arr);
+
+        DeleteRowsInServerDBTableWithFilter("Member", filter_statement_str, response_received_callback_function);
+    }
+
+    // API functions for working with the AppointmentBooking table.
+
+    // Status after testing: Working.
+    function AddAppointmentBooking(booking_member_id, booked_doctor_id, appointment_date_time_str, response_received_callback_function)
+    {
+        let current_time_str = ConvertDateObjToStr(new Date(Date.now()));
+
+        // console.log("Current time string: " + current_time_str);
+
+        AddRowToServerDBTable(
+            "AppointmentBooking",
+            "BookingMemberID, BookedDoctorID, AppointmentBookingCreationDateTime, AppointmentDateTime",
+            `${booking_member_id}, ${booked_doctor_id}, '${current_time_str}', '${appointment_date_time_str}'`,
+            response_received_callback_function
+        );
+    }
+
+    // Status after testing: Pending.
+    function GetAppointmentBookings(filter_arr, response_received_callback_function)
+    {
+        GetRowsFromServerDBTableWithFilter("AppointmentBooking", GetFilterStatementStrFromFilterArr(filter_arr), response_received_callback_function);
+    }
+
+    // Status after testing: Pending.
+    function GetAllAppointmentBookings(response_received_callback_function)
+    {
+        GetAppointmentBookings(null, response_received_callback_function);
+    }
+
+    // Status after testing: Working.
+    function DeleteAppointmentBooking(filter_arr, response_received_callback_function)
+    {
+        let filter_statement_str = GetFilterStatementStrFromFilterArr(filter_arr);
+
+        DeleteRowsInServerDBTableWithFilter("AppointmentBooking", filter_statement_str, response_received_callback_function);
+    }
+
+    // API functions for working with the FastDocTransaction table.
+
+    // Status after testing: Working.
+    function AddFastDocTransaction(origin_member_id, associated_appointment_booking_id, transaction_amount, transaction_method, response_received_callback_function)
+    {
+        AddRowToServerDBTable(
+            "FastDocTransaction",
+            "OriginMemberID, AssociatedAppointmentBookingID, TransactionAmount, TransactionMethod",
+            `${origin_member_id}, ${associated_appointment_booking_id}, ${transaction_amount}, ${transaction_method}`,
+            response_received_callback_function
+        );
+    }
+
+    // Status after testing: Pending.
+    function GetFastDocTransactions(filter_arr, response_received_callback_function)
+    {
+        GetRowsFromServerDBTableWithFilter("FastDocTransaction", GetFilterStatementStrFromFilterArr(filter_arr), response_received_callback_function);
+    }
+
+    // Status after testing: Pending.
+    function GetAllFastDocTransactions(response_received_callback_function)
+    {
+        GetFastDocTransactions(null, response_received_callback_function);
+    }
+
+    // Status after testing: Working.
+    function DeleteFastDocTransaction(filter_arr, response_received_callback_function)
+    {
+        let filter_statement_str = GetFilterStatementStrFromFilterArr(filter_arr);
+
+        DeleteRowsInServerDBTableWithFilter("FastDocTransaction", filter_statement_str, response_received_callback_function);
     }
 
     return {
+        // Exposed API variables/constants
+        TransactionMethod: TransactionMethod,
+
+        // Exposed API functions
+        QueryRestDB: QueryRestDB,
         LocalDBCommand: LocalDBCommand,
-        SendRequestToServerLocalDB: SendRequestToServerLocalDB,
+        SendRequestToServerDB: SendRequestToServerDB,
+        AddRowToServerDBTable: AddRowToServerDBTable,
+        GetRowsFromServerDBTableWithFilter: GetRowsFromServerDBTableWithFilter,
+        GetAllRowsFromServerDBTable: GetAllRowsFromServerDBTable,
+        UpdateRowsInServerDBTableWithFilter: UpdateRowsInServerDBTableWithFilter,
+        DeleteRowsInServerDBTableWithFilter: DeleteRowsInServerDBTableWithFilter,
         AddNewMember: AddNewMember,
-        QueryRestDB: QueryRestDB
+        GetMembers: GetMembers,
+        UpdateMembers: UpdateMembers,
+        DeleteMembers: DeleteMembers,
+        AddAppointmentBooking: AddAppointmentBooking,
+        GetAppointmentBookings: GetAppointmentBookings,
+        GetAllAppointmentBookings: GetAllAppointmentBookings,
+        DeleteAppointmentBooking: DeleteAppointmentBooking,
+        AddFastDocTransaction: AddFastDocTransaction,
+        GetFastDocTransactions: GetFastDocTransactions,
+        GetAllFastDocTransactions: GetAllFastDocTransactions,
+        DeleteFastDocTransaction: DeleteFastDocTransaction
     };
 }
