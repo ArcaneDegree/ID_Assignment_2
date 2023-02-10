@@ -114,26 +114,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-// Swiper for Doctors :(
- 
-
-
-
-
-
-
+// Loader
 
 
 
