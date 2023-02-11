@@ -367,7 +367,8 @@ function InitLocalDB()
                 Passwd varchar(100),
                 EmailAddress varchar(200),
                 PrivilegeType int,
-                CurrentStatus int
+                CurrentStatus int,
+                MemberImgFilePath varchar(300)
             );
             `,
             [],
@@ -380,8 +381,10 @@ function InitLocalDB()
         let create_health_article_post_table_command_obj = new LocalDBCommand(
             `CREATE TABLE HealthArticlePost (
                 HealthArticlePostID INTEGER PRIMARY KEY,
-                Title varchar(1000),
-                Content varchar(8000)
+                PreviewTitle varchar(1000),
+                HealthArticleURLLink varchar(8000),
+                HealthArticlePostCreationDate varchar(100),
+                HealthArticlePostImgFilePath varchar(300)
             );
             `,
             [],
@@ -425,7 +428,8 @@ function InitLocalDB()
                 Name varchar(200),
                 EmailAddress varchar(200),
                 Specialization varchar(200),
-                Description varchar(1000)
+                Description varchar(1000),
+                DoctorImgFilePath varchar(300)
             );
             `,
             [],
@@ -473,7 +477,18 @@ function InitLocalDB()
                 OriginMemberID int,
                 AssociatedAppointmentBookingID int,
                 TransactionAmount money,
-                TransactionMethod int
+                TransactionMethod int,
+                FullName varchar(200),
+                EmailAddress varchar(200),
+                Address varchar(200),
+                City varchar(200),
+                State varchar(200),
+                PostalCode varchar(200),
+                CardholderName varchar(200),
+                CreditCardNumber varchar(200),
+                ExpiryMonth int,
+                ExpiryYear int,
+                CVV int
             );
             `,
             [],
@@ -547,6 +562,8 @@ function RunCommandOnLocalDB(db_obj, command_obj, response_obj = null)
 // handles the connection to the local database and disconnection from the local database.
 function ExecuteCommandOnLocalDB(command_obj, response_obj = null)
 {
+    // console.log("\nCurrent command string in ExecuteCommandOnLocalDB: " + command_obj.command_str);
+
     let local_db = ConnectToLocalDB();
 
     RunCommandOnLocalDB(local_db, command_obj, response_obj);

@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: rgb(19, 61, 85);
+    color: rgb(163, 163, 163);
+}
+
+li {
+    font-size: large;
+}
+
+.fastdoc_api_header {
+    text-align: center;
+}
+
+.fastdoc_logo_div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}

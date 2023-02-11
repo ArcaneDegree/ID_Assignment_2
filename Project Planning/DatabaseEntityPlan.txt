@@ -1,5 +1,7 @@
-//Note: The RestDB datetime format for all datetime attributes is 'DD/MM/YYYY hh:mm:ss' (without
+// Note: The datetime format for all datetime attributes is 'DD/MM/YYYY hh:mm:ss' (without
 the single quotation marks).
+// Note: The date format for all date attributes is 'DD/MM/YYYY' (without the single
+quotation marks).
 
 // High priority
 Member
@@ -9,6 +11,7 @@ Member
 -> EmailAddress => varchar(200)
 -> PrivilegeType => int
 -> CurrentStatus => int
+-> MemberImgFilePath => varchar(300)
 
 /*
 Notes:
@@ -21,7 +24,8 @@ The PrivilegeType attribute can only have a value of 0, 1 or 2.
 Mapping of PrivilegeType attribute values:
 Guest = 0
 NormalMember = 1
-Administrator = 2
+Doctor = 2
+Administrator = 3
 
 The value of the CurrentStatus attribute must be a value found in the CurrentStatus 
 attribute mapping table.
@@ -33,8 +37,10 @@ Online = 1
 // High priority
 HealthArticlePost
 -> HealthArticlePostID => int (Primary Key)
--> Title => varchar(1000)
--> Content => varchar(8000)
+-> PreviewTitle => varchar(1000)
+-> HealthArticleURLLink => varchar(8000)
+-> HealthArticlePostCreationDate => varchar(100)
+-> HealthArticlePostImgFilePath => varchar(300)
 
 // Medium priority
 HealthArticlePostReaction
@@ -66,6 +72,7 @@ Doctor
 -> EmailAddress => varchar(200)
 -> Specialization => varchar(200)
 -> Description => varchar(1000)
+-> DoctorImgFilePath => varchar(300)
 
 // High priority
 DoctorReview
@@ -97,6 +104,17 @@ FastDocTransaction
 -> AssociatedAppointmentBookingID => int (Foreign Key REFERENCES AppointmentBooking.AppointmentBookingID)
 -> TransactionAmount => money
 -> TransactionMethod => int
+-> FullName => varchar(200)
+-> EmailAddress => varchar(200)
+-> Address => varchar(200)
+-> City => varchar(200)
+-> State => varchar(200)
+-> PostalCode => varchar(200)
+-> CardholderName => varchar(200)
+-> CreditCardNumber => varchar(200)
+-> ExpiryMonth => int
+-> ExpiryYear => int
+-> CVV => int
 
 /*
 Notes:
@@ -110,7 +128,6 @@ The value of the TransactionMethod attribute must be a value found in the Transa
 attribute mapping table.
 Mapping of TransactionMethod attribute values:
 CreditCard = 0
-BankAccount = 1
 */
 
 // High priority

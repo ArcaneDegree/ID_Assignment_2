@@ -7,8 +7,19 @@ function LoadFastDocAPI()
     var current_working_dir_path = "";
 
     const TransactionMethod = {
-        Credit_Card: 0,
-        Bank_Account: 1
+        CreditCard: 0
+    }
+
+    const PrivilegeType = {
+        Guest: 0,
+        NormalMember: 1,
+        Doctor: 2,
+        Administrator: 3
+    }
+
+    const ActivityStatusType = {
+        Offline: 0,
+        Online: 1
     }
 
     function GetCharCountInStr(str, selected_char)
@@ -329,10 +340,10 @@ function LoadFastDocAPI()
         return result_values_str;
     }
 
-    // Status after testing: Pending.
+    // Status after testing: Working.
     // Note: This function is meant to serve as a base helper function.
     // Note: The format for the datetime string returned is 'DD/MM/YYYY hh:mm:ss'.
-    function ConvertDateObjToStr(date_obj)
+    function ConvertDateObjToDateTimeStr(date_obj)
     {
         let date_year = date_obj.getFullYear();
 
@@ -353,9 +364,38 @@ function LoadFastDocAPI()
     // Note: This function is meant to serve as a base helper function.
     // Note: The format for the datetime string passed into this function should be
     // 'DD/MM/YYYY hh:mm:ss'.
-    function ConvertStrToDateObj(date_str)
+    function ConvertDateTimeStrToDateObj(date_str)
     {
+        let date_part_str = date_str.split(" ")[0];
 
+        let time_part_str = date_str.split(" ")[1];
+
+        let day_num = parseInt(date_part_str.split("/")[0]);
+
+        let month_num = parseInt(date_part_str.split("/")[1]);
+
+        let year_num = parseInt(date_part_str.split("/")[2]);
+
+        let hour_num = parseInt(time_part_str.split(":")[0]);
+
+        let minute_num = parseInt(time_part_str.split(":")[1]);
+
+        let second_num = parseInt(time_part_str.split(":")[2]);
+
+        return new Date(year_num, month_num - 1, day_num, hour_num, minute_num, second_num, 0);
+    }
+
+    // Status after testing: Pending.
+    // Note: This function is meant to serve as a base helper function.
+    function ConvertDateObjToDateStr(date_obj)
+    {
+        let date_year = date_obj.getFullYear();
+
+        let date_month = date_obj.getMonth() + 1;
+
+        let date_day = date_obj.getDate();
+
+        return `${date_day}/${date_month}/${date_year}`;
     }
 
     // Status after testing: Working.
@@ -509,12 +549,129 @@ function LoadFastDocAPI()
         DeleteRowsInServerDBTableWithFilter("Member", filter_statement_str, response_received_callback_function);
     }
 
+    // API functions for working with the HealthArticlePost table
+
+    // Status after testing: Pending.
+    function AddHealthArticlePost(preview_title, health_article_url_link, health_article_post_img_file_path, response_received_callback_function)
+    {
+        AddRowToServerDBTable("HealthArticlePost", "PreviewTitle, HealthArticleURLLink, HealthArticlePostCreationDate, HealthArticlePostImgFilePath", `'${preview_title}', '${health_article_url_link}', '${ConvertDateObjToDateStr(new Date(Date.now()))}', '${health_article_post_img_file_path}'`, response_received_callback_function);
+    }
+
+    // Status after testing: Pending.
+    function GetHealthArticlePosts(filter_arr, response_received_callback_function)
+    {
+        GetRowsFromServerDBTableWithFilter(
+            "HealthArticlePost",
+            GetFilterStatementStrFromFilterArr(filter_arr),
+            response_received_callback_function
+        );
+    }
+
+    // Status after testing: Pending.
+    function GetAllHealthArticlePosts(response_received_callback_function)
+    {
+        GetHealthArticlePosts(null, response_received_callback_function);
+    }
+
+    // Status after testing: Pending.
+    function DeleteHealthArticlePosts(filter_arr, response_received_callback_function)
+    {
+        DeleteRowsInServerDBTableWithFilter(
+            "HealthArticlePost",
+            GetFilterStatementStrFromFilterArr(filter_arr),
+            response_received_callback_function
+        );
+    }
+
+    // API functions for working with the Doctor table.
+
+    // Status after testing: Pending
+    function AddDoctor(doctor_name, doctor_email_address, doctor_specialization, doctor_description, doctor_img_file_path, response_received_callback_function)
+    {
+        AddRowToServerDBTable(
+            "Doctor",
+            "Name, EmailAddress, Specialization, Description, DoctorImgFilePath",
+            `'${doctor_name}',
+            '${doctor_email_address}',
+            '${doctor_specialization}',
+            '${doctor_description}',
+            '${doctor_img_file_path}'
+            `,
+            response_received_callback_function
+        );
+    }
+
+    // Status after testing: Pending.
+    function GetDoctors(filter_arr, response_received_callback_function)
+    {
+        GetRowsFromServerDBTableWithFilter(
+            "Doctor",
+            GetFilterStatementStrFromFilterArr(filter_arr),
+            response_received_callback_function
+        );
+    }
+
+    // Status after testing: Pending.
+    function GetAllDoctors(response_received_callback_function)
+    {
+        GetDoctors(null, response_received_callback_function);
+    }
+
+    // Status after testing: Pending.
+    function DeleteDoctors(filter_arr, response_received_callback_function)
+    {
+        DeleteRowsInServerDBTableWithFilter(
+            "Doctor",
+            GetFilterStatementStrFromFilterArr(filter_arr),
+            response_received_callback_function
+        );
+    }
+
+    // API functions for working with the DoctorReview table.
+
+    // Status after testing: Pending.
+    function AddDoctorReview(reviewing_member_id, reviewed_doctor_id, review_star_count, content)
+    {
+        AddRowToServerDBTable(
+            "DoctorReview",
+            "ReviewingMemberID, ReviewedDoctorID, ReviewStarCount, Content",
+            `${reviewing_member_id}, ${reviewed_doctor_id}, ${review_star_count}, '${content}'`,
+            response_received_callback_function
+        );
+    }
+
+    // Status after testing: Pending.
+    function GetDoctorReviews(filter_arr, response_received_callback_function)
+    {
+        GetRowsFromServerDBTableWithFilter(
+            "DoctorReview",
+            GetFilterStatementStrFromFilterArr(filter_arr),
+            response_received_callback_function
+        );
+    }
+
+    // Status after testing: Pending.
+    function GetAllDoctorReviews(response_received_callback_function)
+    {
+        GetDoctorReviews(null, response_received_callback_function);
+    }
+
+    // Status after testing: Pending.
+    function DeleteDoctorReviews(filter_arr, response_received_callback_function)
+    {
+        DeleteRowsInServerDBTableWithFilter(
+            "DoctorReview",
+            GetFilterStatementStrFromFilterArr(filter_arr),
+            response_received_callback_function
+        );
+    }
+
     // API functions for working with the AppointmentBooking table.
 
     // Status after testing: Working.
     function AddAppointmentBooking(booking_member_id, booked_doctor_id, appointment_date_time_str, response_received_callback_function)
     {
-        let current_time_str = ConvertDateObjToStr(new Date(Date.now()));
+        let current_time_str = ConvertDateObjToDateTimeStr(new Date(Date.now()));
 
         // console.log("Current time string: " + current_time_str);
 
@@ -539,7 +696,7 @@ function LoadFastDocAPI()
     }
 
     // Status after testing: Working.
-    function DeleteAppointmentBooking(filter_arr, response_received_callback_function)
+    function DeleteAppointmentBookings(filter_arr, response_received_callback_function)
     {
         let filter_statement_str = GetFilterStatementStrFromFilterArr(filter_arr);
 
@@ -549,12 +706,44 @@ function LoadFastDocAPI()
     // API functions for working with the FastDocTransaction table.
 
     // Status after testing: Working.
-    function AddFastDocTransaction(origin_member_id, associated_appointment_booking_id, transaction_amount, transaction_method, response_received_callback_function)
+    function AddFastDocTransaction(origin_member_id, associated_appointment_booking_id, transaction_amount, transaction_method, full_name, email_address, address, city, state, postal_code, cardholder_name, credit_card_number_str, expiry_month, expiry_year, cvv, response_received_callback_function)
     {
         AddRowToServerDBTable(
             "FastDocTransaction",
-            "OriginMemberID, AssociatedAppointmentBookingID, TransactionAmount, TransactionMethod",
-            `${origin_member_id}, ${associated_appointment_booking_id}, ${transaction_amount}, ${transaction_method}`,
+            `
+            OriginMemberID,
+            AssociatedAppointmentBookingID,
+            TransactionAmount,
+            TransactionMethod,
+            FullName,
+            EmailAddress,
+            Address,
+            City,
+            State,
+            PostalCode,
+            CardholderName,
+            CreditCardNumber,
+            ExpiryMonth,
+            ExpiryYear,
+            CVV
+            `,
+            `
+            ${origin_member_id},
+            ${associated_appointment_booking_id},
+            ${transaction_amount},
+            ${transaction_method},
+            '${full_name}',
+            '${email_address}',
+            '${address}',
+            '${city}',
+            '${state}',
+            '${postal_code}',
+            '${cardholder_name}',
+            '${credit_card_number_str}',
+            ${expiry_month},
+            ${expiry_year},
+            ${cvv}
+            `,
             response_received_callback_function
         );
     }
@@ -572,16 +761,33 @@ function LoadFastDocAPI()
     }
 
     // Status after testing: Working.
-    function DeleteFastDocTransaction(filter_arr, response_received_callback_function)
+    function DeleteFastDocTransactions(filter_arr, response_received_callback_function)
     {
         let filter_statement_str = GetFilterStatementStrFromFilterArr(filter_arr);
 
         DeleteRowsInServerDBTableWithFilter("FastDocTransaction", filter_statement_str, response_received_callback_function);
     }
 
+    // API functions for miscellaneous utilities.
+
+    // Status after testing: Pending.
+    // The value of date_str must be in the following format: DD/MM/YYYY
+    function GetMonthNameFromDateStr(date_str)
+    {
+        let month_num = parseInt(date_str.split("/")[1]);
+
+        let date_obj = new Date();
+
+        date_obj.setMonth(month_num - 1);
+
+        return date_obj.toLocaleString("en-US", {month: "long"});
+    }
+
     return {
         // Exposed API variables/constants
         TransactionMethod: TransactionMethod,
+        PrivilegeType: PrivilegeType,
+        ActivityStatusType: ActivityStatusType,
 
         // Exposed API functions
         QueryRestDB: QueryRestDB,
@@ -592,17 +798,40 @@ function LoadFastDocAPI()
         GetAllRowsFromServerDBTable: GetAllRowsFromServerDBTable,
         UpdateRowsInServerDBTableWithFilter: UpdateRowsInServerDBTableWithFilter,
         DeleteRowsInServerDBTableWithFilter: DeleteRowsInServerDBTableWithFilter,
+        // Member API functions
         AddNewMember: AddNewMember,
         GetMembers: GetMembers,
         UpdateMembers: UpdateMembers,
         DeleteMembers: DeleteMembers,
+        // HealthArticlePost API functions
+        AddHealthArticlePost: AddHealthArticlePost,
+        GetHealthArticlePosts: GetHealthArticlePosts,
+        GetAllHealthArticlePosts: GetAllHealthArticlePosts,
+        DeleteHealthArticlePosts: DeleteHealthArticlePosts,
+        // Doctor API functions
+        AddDoctor: AddDoctor,
+        GetDoctors: GetDoctors,
+        GetAllDoctors: GetAllDoctors,
+        DeleteDoctors: DeleteDoctors,
+        // DoctorReview API functions
+        AddDoctorReview: AddDoctorReview,
+        GetDoctorReviews: GetDoctorReviews,
+        GetAllDoctorReviews: GetAllDoctorReviews,
+        DeleteDoctorReviews: DeleteDoctorReviews,
+        // AppointmentBooking API functions
         AddAppointmentBooking: AddAppointmentBooking,
         GetAppointmentBookings: GetAppointmentBookings,
         GetAllAppointmentBookings: GetAllAppointmentBookings,
-        DeleteAppointmentBooking: DeleteAppointmentBooking,
+        DeleteAppointmentBookings: DeleteAppointmentBookings,
+        // FastDocTransaction API functions
         AddFastDocTransaction: AddFastDocTransaction,
         GetFastDocTransactions: GetFastDocTransactions,
         GetAllFastDocTransactions: GetAllFastDocTransactions,
-        DeleteFastDocTransaction: DeleteFastDocTransaction
+        DeleteFastDocTransactions: DeleteFastDocTransactions,
+        // Miscellaneous utility API functions
+        GetMonthNameFromDateStr: GetMonthNameFromDateStr,
+        ConvertDateObjToDateStr: ConvertDateObjToDateStr,
+        ConvertDateObjToDateTimeStr: ConvertDateObjToDateTimeStr,
+        ConvertDateTimeStrToDateObj: ConvertDateTimeStrToDateObj
     };
 }

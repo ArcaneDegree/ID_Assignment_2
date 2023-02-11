@@ -3,22 +3,84 @@
 [logo]: /favicon_io/android-chrome-192x192.png "Logo Title Text 2"
 # FastDoc API Documentation
 
-<b>Functions that can be called:</b>
+<b>Constants and variables that can be accessed from the FastDoc API:</b>
 <br>
-1. SendRequestToServer()
+1. TransactionMethod (Type: Dictionary)
+1. PrivilegeType (Type: Dictionary)
+1. ActivityStatusType (Type: Dictionary)
+
+<b>Functions that can be accessed from the FastDoc API:</b>
+<br>
+1. QueryRestDB
+1. LocalDBCommand
+1. SendRequestToServerDB
+1. AddRowToServerDBTable
+1. GetRowsFromServerDBTableWithFilter
+1. GetAllRowsFromServerDBTable
+1. UpdateRowsInServerDBTableWithFilter
+1. DeleteRowsInServerDBTableWithFilter
+1. AddNewMember
+1. GetMembers
+1. UpdateMembers
+1. DeleteMembers
+1. AddHealthArticlePost
+1. GetHealthArticlePosts
+1. GetAllHealthArticlePosts
+1. DeleteHealthArticlePosts
+1. AddDoctor
+1. GetDoctors
+1. GetAllDoctors
+1. DeleteDoctors
+1. AddDoctorReview
+1. GetDoctorReviews
+1. GetAllDoctorReviews
+1. DeleteDoctorReviews
+1. AddAppointmentBooking
+1. GetAppointmentBookings
+1. GetAllAppointmentBookings
+1. DeleteAppointmentBookings
+1. AddFastDocTransaction
+1. GetFastDocTransactions
+1. GetAllFastDocTransactions
+1. DeleteFastDocTransactions
+
+<b>QueryRestDB(selected_table_name, selected_action, request_body_obj, callback_function)</b>
+<br>
+|Parameter Name|Parameter Type|
+|---|---|
+|selected_table_name|String|
+|selected_action|String|
+|request_body_obj|Object|
+|callback_function|Function|
+---
+<br>
+This function does not return anything.
 
 <br>
-<b>Calling convention for API:</b><br>
+<b>LocalDBCommand(new_command_str, new_params_arr, new_callback_func)</b>
+
+<br>
+|Parameter Name|Parameter Type|
+|---|---|
+|new_command_str|String|
+|new_params_arr|Array|
+|new_callback_func|Function|
+---
+
+This function does not return anything.
+
+<br>
+<b>Request URL path format that the API uses when sending requests to the local server database:</b><br>
 URL path format: /fastdoc/[table_name]/[action]<br>
 <br>
 Example:<br>
 
-> /fastdoc/member/add<br>
+>/fastdoc/member/add<br>
 
 <br>
 A request with this URL will add a new record to the 'member' table/collection in the RestDB database.<br>
 <br>
-<b>List of actions that can be used in request URLs:</b>
+<b>List of actions that can be specified in request URL paths:</b>
 
 1. get_all
 1. get
@@ -27,7 +89,7 @@ A request with this URL will add a new record to the 'member' table/collection i
 1. delete
 <br>
 
-<b>List of tables that can be used in request URLs/accessed from the API:</b>
+<b>List of tables that can be specified in request URL paths:</b>
 
 1. member
 1. health-article-post
@@ -38,6 +100,19 @@ A request with this URL will add a new record to the 'member' table/collection i
 1. appointment-booking
 1. transaction
 1. consultation
+<br>
+
+<b>List of tables that can be accessed from the FastDoc API:</b>
+
+1. Member
+1. HealthArticlePost
+1. HealthArticlePostReaction
+1. HealthArticleComment
+1. Doctor
+1. DoctorReview
+1. AppointmentBooking
+1. Transaction
+1. Consultation
 <br>
 
 <b>Actions</b>

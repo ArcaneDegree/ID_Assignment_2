@@ -4,8 +4,7 @@
   font-family: 'Poppins', sans-serif;
   margin:0; padding:0;
   box-sizing: border-box;
-  outline: none;
-  border:none;
+  outline: none; border:none;
   text-transform: capitalize;
   transition: all .2s linear;
 }
@@ -17,6 +16,7 @@
   padding:25px;
   min-height: 100vh;
   background: linear-gradient(90deg, #424242 60%, #202020 40.1%);
+  
 }
 
 .container form{
@@ -47,7 +47,7 @@
   margin:15px 0;
 }
 
-.container form .row .col .inputBox span{
+.container form .row .inputBox span{
   margin-bottom: 10px;
   display: block;
 }
@@ -91,4 +91,26 @@
 
 .container form .submit-btn:hover{
   background: #2ecc71;
+}
+
+.sign_up_fields_grid {
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 0px;
+    row-gap: 10px;
+    grid-row-start: 2;
+}
+
+.inputBox {
+    width: 100%;
+    border:1px solid #ccc;
+    padding:10px 15px;
+    font-size: 15px;
+    text-transform: none;
+}
+
+.sign_up_fields_form_div {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
 }
