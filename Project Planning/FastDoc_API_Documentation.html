@@ -17,6 +17,7 @@
             <li>TransactionMethod</li>
             <li>PrivilegeType</li>
             <li>ActivityStatusType</li>
+            <li>FastDocServiceType</li>
         </ol>
 
         <br/>
@@ -33,6 +34,7 @@
             <li>DeleteRowsInServerDBTableWithFilter</li>
             <li>AddNewMember</li>
             <li>GetMembers</li>
+            <li>GetAllMembers</li>
             <li>UpdateMembers</li>
             <li>DeleteMembers</li>
             <li>AddHealthArticlePost</li>
@@ -56,5 +58,145 @@
             <li>GetAllFastDocTransactions</li>
             <li>DeleteFastDocTransactions</li>
         </ol>
+
+        <br>
+
+        <h2>How do member account privilege types work in FastDoc:</h2>
+        <ul>
+            <li>
+                Each member account on FastDoc is assigned a privilege type. There are 4 different
+                privilege types at the current time of writing.
+                <ol>
+                    <li>
+                        Guest
+                    </li>
+                    <li>
+                        NormalMember
+                    </li>
+                    <li>
+                        Doctor
+                    </li>
+                    <li>
+                        Administrator
+                    </li>
+                </ol>
+            </li>
+            <li>
+                The Guest privilege type is currently not in use. It was initially intended to
+                identify users who were not logged in to any account so as to provide the
+                correct set of features meant for guests to them.
+            </li>
+            <li>
+                The NormalMember privilege type is assigned to an account that has been created
+                through the "Sign Up" page of the website.
+            </li>
+            <li>
+                The Doctor and Administrator privilege types are not and cannot be assigned to
+                accounts created through the "Sign Up" page of the website. Instead, the head
+                administrator of the website will perform the creation of these accounts when the
+                new doctor or administrator has joined FastDoc as part of the
+                standard onboarding procedure for new employees, the credentials of the newly
+                created account will then be sent privately to the new employee. If the new
+                employee is a doctor, their account will be assigned the Doctor privilege type,
+                otherwise, if the new employee is an administrator, their account will be assigned
+                the Administrator privilege type.
+            </li>
+        </ul>
+
+        <br>
+
+        <h2>Possible security related loopholes or edge cases concerning the FastDoc API</h2>
+        <ul>
+            <li>
+                A user could modify code in the 'fastdoc_api.js' file to modify the implementation
+                of the AddNewMember function to assign a privilege type of Doctor or Administrator
+                to their own account just before clicking on the submit button on the Sign Up form.
+                Chrome browsers allow users to not just view code, but also modify the code. This
+                would end up allowing their elevate their permissions on the website without
+                authorization.
+            </li>
+            <li>
+                Modification of requests about to be sent to the server on the client side.
+            </li>
+            <li>
+                Modification of responses received from the server on the client side.
+            </li>
+            <li>
+                Viewing of responses on the client side.
+            </li>
+        </ul>
+
+        <br>
+
+        <h2>IRIR (Information request -> Redirect Information request -> Redirect request) method</h2>
+        <h3>Main procedure</h3>
+        <ul>
+            <li>
+                The client wants to go to another page. They need to send information A1 in the
+                request when sending a request to go to another page to the server.
+            </li>
+            <li>
+                The client requests information A1 from the server.
+            </li>
+            <li>
+                The server sends back information A1 with a signature to the client.
+            </li>
+            <li>
+                The client requests a page link, they are required to send information A1 along with
+                the signature.
+            </li>
+            <li>
+                The server first checks the signature in the client's request to verify that
+                information A1 has not been changed. If it has been changed, the server returns an
+                error message, otherwise, the server checks information A1 to see if the client is
+                allowed to view the page at the link being requested. If the client is not allowed
+                to view the page, an error message is returned, otherwise, the link to the page is
+                sent, the link comprises of the HTML file name and a server encrypted version of
+                information A1.
+            </li>
+            <li>
+                The client uses the link received from the server to redirect to the desired page.
+            </li>
+            <li>
+                The browser sends a request for the page resource to the server.
+            </li>
+            <li>
+                The server looks at the URL path of the request (which comprises of the HTML file name
+                of the requested page resource and the server encrypted version of information A1). It
+                decrypts the encrypted version of information A1, using the information provided in
+                information A1, it sees if the client is allowed to view the page. If the client is
+                allowed to view the page, the server responds with the relevant page resource, otherwise
+                it responds with an error message.
+            </li>
+            <li>
+                Note: Information A1 refers to information that lets the server know if it should
+                grant access to a page resource to a user or not.
+            </li>
+        </ul>
+
+        <br>
+
+        <h2>Proposed measures to secure the website</h2>
+        <ul>
+            <li>
+                Make use of JWTs (JSON Web Tokens) signed with a special key only visible to the server
+                to identify users and prevent tampering of token information using a server issued
+                signature (the signature is generated on the server only and is used by the server
+                to verify the integrity of information in the token).
+            </li>
+            <li>
+                Make use of the IRIR method for handling requests for page redirects.
+            </li>
+            <li>
+                Implementations of procedures dealing with sensitive or protected user information
+                (e.g. credentials, user account privilege types etc) should be on the server and not
+                on the client.
+            </li>
+            <li>
+                Validation of inputs should be performed mainly on the server side.
+            </li>
+        </ul>
+
+        <br>
     </body>
 </html>

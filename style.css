@@ -166,21 +166,21 @@ nav ul li button
 
 #login-form
 {
-    display: none;
-    overflow: auto;
-    position: fixed;
-    border-radius: 8px;
-    z-index: 2;
+  display: none;
+  overflow: auto;
+  position: fixed;
+  border-radius: 8px;
+  z-index: 3;
 }
 .form-box
 {
-    width:380px;
+  width:380px;
 	height:480px;
 	position:relative;
 	margin:2% auto;
 	background:rgba(0,0,0,0.3);
 	padding:10px;
-    overflow: hidden;
+  overflow: hidden;
 }
 .button-box
 {
@@ -1030,5 +1030,13 @@ ul{
   margin: 0 48% -60px 48%;
 }
 
-
+.login_status_div {
+  display: none;
+  flex-wrap: wrap;
+  border:1px solid #424242;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="service_booking.css"/>
+    </head>
+
+    <body>
+        <div id="main_service_booking_container_div" class="container">
+            <form id="service_booking_form">
+                <div id="service_booking_form_main_div" class="service_booking_form_main_div">
+                    <div id="service_booking_selection_fields_div" class="service_booking_form_fields_div">
+                        <label>Type of service</label>
+                        
+                        <select id="service_selection_box" class="inputBox" required>
+                            
+                        </select>
+                    </div>
+    
+                    <div id="OnlineDoctorConsultation_fields_div" class="service_booking_form_fields_div">
+                        <label>Doctor you would like to consult with</label>
+                        
+                        <select id="consultation_doctor_selection_box" class="inputBox" required>
+    
+                        </select>
+    
+                        <label>Date and time of the consultation:</label>
+    
+                        <div id="consultation_date_time_fields_div" class="consultation_date_time_fields_div">
+                            <div class="consultation_date_time_field_div">
+                                <label>Day</label>
+
+                                <input id="consultation_day_input" class="inputBox" type="number"/>
+                            </div>
+
+                            <div class="consultation_date_time_field_div">
+                                <label>Month</label>
+
+                                <input id="consultation_month_input" class="inputBox" type="number"/>
+                            </div>
+
+                            <div class="consultation_date_time_field_div">
+                                <label>Year</label>
+
+                                <input id="consultation_year_input" class="inputBox" type="number"/>
+                            </div>
+
+                            <div class="consultation_date_time_field_div">
+                                <label>Hour</label>
+
+                                <input id="consultation_hour_input" class="inputBox" type="number"/>
+                            </div>
+
+                            <div class="consultation_date_time_field_div">
+                                <label>Minute</label>
+
+                                <input id="consultation_minute_input" class="inputBox" type="number"/>
+                            </div>
+
+                            <div class="consultation_date_time_field_div">
+                                <label>AM/PM</label>
+
+                                <select id="consultation_am_pm_selection_box" class="inputBox" type="number">
+                                    <option>AM</option>
+                                    <option>PM</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <label>Duration of consultation</label>
+
+                        <div id="consultation_duration_div">
+                            <input id="consultation_duration_input" class="inputBox" type="number"/>
+
+                            <label id="consultation_duration_unit_hint_label">minute(s)</label>
+                        </div>
+                    </div>
+    
+                    <div id="ClinicAppointment_fields_div" class="service_booking_form_fields_div">
+    
+                    </div>
+    
+                    <div id="MedicalCertificate_fields_div" class="service_booking_form_fields_div">
+    
+                    </div>
+    
+                    <div id="HealthScreening_fields_div" class="service_booking_form_fields_div">
+    
+                    </div>
+    
+                    <div id="Vaccination_fields_div" class="service_booking_form_fields_div">
+    
+                    </div>
+    
+                    <div id="BehavioralHealthService_fields_div" class="service_booking_form_fields_div">
+    
+                    </div>
+
+                    <button id="payment_btn" class="submit-btn" type="submit">Proceed to payment</button>
+
+                    <button id="return_to_homepage_btn" class="submit-btn" type="button">Return to Homepage</button>
+                </div>
+            </form>
+        </div>
+    </body>
+
+    <script src="libraries/fastdoc_api.js"></script>
+    <script src="service_booking.js"></script>
+</html>

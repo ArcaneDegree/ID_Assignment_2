@@ -69,21 +69,24 @@
        <form id="actual_login_form" action="#">
           <div class="data">
              <label>Email</label>
-             <input id="email_address_input_box" type="email" required>
+             <input id="email_address_input_box" type="email" class="data_input_box" required>
           </div>
           <div class="data">
              <label>Password</label>
-             <input id="passwd_input_box" type="password" required>
+             <input id="passwd_input_box" type="password" class="data_input_box" required>
           </div>
           <div class="forgot-pass">
              <a href="#">Forgot Password?</a>
+          </div>
+          <div id="login_status_div" class="login_status_div">
+            <label id="login_status_label">Status of login</label>
           </div>
           <div class="btn">
              <div class="inner"></div>
              <button type="submit">Login</button>
           </div>
           <div class="signup-link">
-             Not a member? <a href="/sign_up.html">Sign up now</a>
+             Not a member? <a id="sign_up_link_a" href="/sign_up.html">Sign up now</a>
           </div>
        </form>
     </div>
@@ -141,38 +144,38 @@ Our service is run with the Patient’s needs as our main focus.
       
 <h1 class="service-title">Services</h1>
       <div class="border"></div>
-      <div class="services">
-        <div class="service">
+      <div id="services_div" class="services">
+        <div id="OnlineDoctorConsultation_div" class="service">
           <i class="icon fas fa-chalkboard-teacher"></i>
           <h4>Consult a doctor online</h4>
           <p>Online consultations with our trusted doctors</p>
         </div>
 
-        <div class="service">
+        <div id="ClinicAppointment_div" class="service">
           <i class="icon fas fa-globe-asia"></i>
           <h4>Clinics near me</h4>
           <p>Book a clinic visit to meet our trusted doctors</p>
         </div>
 
-        <div class="service">
+        <div id="MedicalCertificate_div" class="service">
           <i class="icon far fa-check-circle"></i>
           <h4>Medical Certificate</h4>
           <p>Get your medical certificate in a blink of an eye</p>
         </div>
 
-        <div class="service">
+        <div id="HealthScreening_div" class="service">
           <i class="icon fas fa-hand-holding-medical"></i>
           <h4>Health Screening</h4>
           <p>Early detection of disease increases the chances of successful treatments</p>
         </div>
 
-        <div class="service">
+        <div id="Vaccination_div" class="service">
           <i class="icon fas fa-syringe"></i>
           <h4>Vaccinations</h4>
           <p>Get treatment with a vaccine to produce immunity to infectious diseases</p>
         </div>
 
-        <div class="service">
+        <div id="BehavioralHealthService_div" class="service">
           <i class="icon fas fa-brain"></i>
           <h4>Behavioral health services</h4>
           <p>Counselling and therapy to support mental and emotional well-being.</p>
