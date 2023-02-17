@@ -93,7 +93,7 @@ The value of the ReviewStarCount attribute must only be a value ranging from 0 t
 AppointmentBooking
 -> AppointmentBookingID => int (Primary Key)
 -> BookingMemberID => int (Foreign Key REFERENCES Member.MemberID)
--> BookedDoctorID => int (Foreign Key REFERENCES Doctor.DoctorID)
+-> BookedDoctorID => int (Foreign Key REFERENCES Doctor.DoctorID) (Can be NULL)
 -> AppointmentBookingCreationDateTime => varchar(100)
 -> AppointmentDateTime => varchar(100)
 
@@ -137,3 +137,8 @@ Consultation
 -> ConsultantDoctorID => int (Foreign Key REFERENCES Doctor.DoctorID)
 -> AssociatedAppointmentBookingID => int (Foreign Key REFERENCES AppointmentBooking.AppointmentBookingID)
 
+// High priority
+FastDocClinic
+-> FastDocClinicID => int (Primary Key)
+-> RegionName => varchar(500)
+-> DistrictName => varchar(500)

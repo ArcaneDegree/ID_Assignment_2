@@ -118,14 +118,6 @@
   row-gap: 10px;
 }
 
-.sign_up_status_box {
-  display: none;
-  flex-wrap: wrap;
-  border:1px solid #424242;
-  padding: 10px;
-  border-radius: 6px;
-}
-
 .service_booking_form_fields_div {
     display: flex;
     flex-direction: column;
@@ -138,13 +130,13 @@
   row-gap: 10px;
 }
 
-.consultation_date_time_fields_div {
+.date_time_fields_div {
   display: flex;
   flex-direction: row;
   column-gap: 10px;
 }
 
-.consultation_date_time_field_div {
+.date_time_field_div {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
@@ -164,4 +156,12 @@
 
 #consultation_duration_input {
   max-width: 100px;
+}
+
+#service_booking_status_div {
+  display: none;
+  flex-wrap: wrap;
+  border:1px solid #424242;
+  padding: 10px;
+  border-radius: 6px;
 }

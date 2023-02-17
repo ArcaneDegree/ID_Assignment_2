@@ -22,49 +22,6 @@
                         <select id="consultation_doctor_selection_box" class="inputBox" required>
     
                         </select>
-    
-                        <label>Date and time of the consultation:</label>
-    
-                        <div id="consultation_date_time_fields_div" class="consultation_date_time_fields_div">
-                            <div class="consultation_date_time_field_div">
-                                <label>Day</label>
-
-                                <input id="consultation_day_input" class="inputBox" type="number"/>
-                            </div>
-
-                            <div class="consultation_date_time_field_div">
-                                <label>Month</label>
-
-                                <input id="consultation_month_input" class="inputBox" type="number"/>
-                            </div>
-
-                            <div class="consultation_date_time_field_div">
-                                <label>Year</label>
-
-                                <input id="consultation_year_input" class="inputBox" type="number"/>
-                            </div>
-
-                            <div class="consultation_date_time_field_div">
-                                <label>Hour</label>
-
-                                <input id="consultation_hour_input" class="inputBox" type="number"/>
-                            </div>
-
-                            <div class="consultation_date_time_field_div">
-                                <label>Minute</label>
-
-                                <input id="consultation_minute_input" class="inputBox" type="number"/>
-                            </div>
-
-                            <div class="consultation_date_time_field_div">
-                                <label>AM/PM</label>
-
-                                <select id="consultation_am_pm_selection_box" class="inputBox" type="number">
-                                    <option>AM</option>
-                                    <option>PM</option>
-                                </select>
-                            </div>
-                        </div>
 
                         <label>Duration of consultation</label>
 
@@ -76,7 +33,17 @@
                     </div>
     
                     <div id="ClinicAppointment_fields_div" class="service_booking_form_fields_div">
-    
+                        <label>Clinic you would like to visit</label>
+
+                        <select id="clinic_appointment_location_selection_box" class="inputBox">
+
+                        </select>
+
+                        <label>Doctor you would like to consult with</label>
+
+                        <select id="clinic_appointment_doctor_selection_box" class="inputBox">
+
+                        </select>
                     </div>
     
                     <div id="MedicalCertificate_fields_div" class="service_booking_form_fields_div">
@@ -93,6 +60,53 @@
     
                     <div id="BehavioralHealthService_fields_div" class="service_booking_form_fields_div">
     
+                    </div>
+
+                    <label id="service_booking_date_time_fields_title_label">Date and time:</label>
+    
+                    <div id="service_booking_date_time_fields_div" class="date_time_fields_div">
+                        <div class="date_time_field_div">
+                            <label>Day</label>
+
+                            <input id="day_input" class="inputBox" type="number"/>
+                        </div>
+
+                        <div class="date_time_field_div">
+                            <label>Month</label>
+
+                            <input id="month_input" class="inputBox" type="number"/>
+                        </div>
+
+                        <div class="date_time_field_div">
+                            <label>Year</label>
+
+                            <input id="year_input" class="inputBox" type="number"/>
+                        </div>
+
+                        <div class="date_time_field_div">
+                            <label>Hour</label>
+
+                            <input id="hour_input" class="inputBox" type="number"/>
+                        </div>
+
+                        <div class="date_time_field_div">
+                            <label>Minute</label>
+
+                            <input id="minute_input" class="inputBox" type="number"/>
+                        </div>
+
+                        <div class="date_time_field_div">
+                            <label>AM/PM</label>
+
+                            <select id="am_pm_selection_box" class="inputBox" type="number">
+                                <option>AM</option>
+                                <option>PM</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="service_booking_status_div">
+                        <label id="service_booking_status_label">Service booking status</label>
                     </div>
 
                     <button id="payment_btn" class="submit-btn" type="submit">Proceed to payment</button>

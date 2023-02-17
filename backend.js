@@ -69,6 +69,14 @@ var default_local_db_file_name = "fastdoc_database.db";
 function OnHttpServerStartListening()
 {
     console.log("Started listening on port " + port_num + ".");
+
+    CheckIfTableExistsInLocalDB("FastDocClinic", (table_exists) =>
+    {
+        if (table_exists == false)
+        {
+            CreateFastDocClinicTable();
+        }
+    });
 }
 
 function ResolveCurrentWorkingDirPath()
@@ -584,6 +592,47 @@ function InitLocalDB()
     }
 }
 
+// The result passed into the result_received_callback_function is of type boolean, it is
+// true if the table exists, otherwise it is false.
+function CheckIfTableExistsInLocalDB(selected_table_name, result_received_callback_function)
+{
+    ExecuteCommandStrOnLocalDB(`SELECT COUNT(*) AS 'Count' FROM sqlite_master WHERE type='table' AND name='${selected_table_name}';`,
+    (rows) =>
+    {
+        // console.log("Type of rows: " + typeof rows);
+
+        // console.log("Value of rows: " + JSON.stringify(rows));
+
+        if (rows[0].Count > 0)
+        {
+            result_received_callback_function(true);
+        }
+        else
+        {
+            result_received_callback_function(false);
+        }
+    });
+}
+
+function CreateFastDocClinicTable()
+{
+    /*
+    FastDocClinic
+    -> FastDocClinicID => int (Primary Key)
+    -> RegionName => varchar(500)
+    -> DistrictName => varchar(500)
+    */
+
+    ExecuteCommandStrOnLocalDB(`
+    CREATE TABLE FastDocClinic (
+    FastDocClinicID INTEGER PRIMARY KEY,
+    RegionName varchar(500),
+    DistrictName varchar(500)
+    );
+    `,
+    null);
+}
+
 // Executes a specified command on the local SQLite database located on the server. This function does
 // not handle the connection to the local database and disconnection from the local database.
 function RunCommandOnLocalDB(db_obj, command_obj, response_obj = null)
@@ -899,6 +948,32 @@ function GetRequestBodyObjFromRequestObj(request_obj, request_body_obj_init_call
 
         request_body_obj_init_callback_function(request_body_obj);
     });
+}
+
+// Note: The function passed into the is_logged_in_bool_received_callback_function parameter of this
+// function must take in the following parameters:
+// 1.) is_logged_in (Type: Boolean) (The value of is_logged_in will be true if the user is logged in,
+// otherwise the value of is_logged_in will be false)
+function IsUserLoggedIn(session_token_payload_obj, is_logged_in_bool_received_callback_function)
+{
+    ExecuteCommandStrOnLocalDB(`SELECT * FROM Member WHERE EmailAddress = '${session_token_payload_obj.email_address}' AND Passwd = '${session_token_payload_obj.passwd}';`,
+    (rows) =>
+    {
+        if (rows.length > 0)
+        {
+            is_logged_in_bool_received_callback_function(true);
+        }
+        else
+        {
+            is_logged_in_bool_received_callback_function(false);
+        }
+    });
+}
+
+function GetClinicDistrictNames(rows_received_callback_function)
+{
+    ExecuteCommandStrOnLocalDB("SELECT DistrictName FROM FastDocClinic;",
+    rows_received_callback_function);
 }
 
 // Note: Certain Chrome browser extensions are known to cause an error on the website with the following
@@ -1276,18 +1351,47 @@ function HandleRequest(request, response)
                 return;
             }
 
-            response.writeHead(200, {"Content-Type": "text/plaintext"});
-
-            if (session_token_payload_obj.email_address == "" || session_token_payload_obj.passwd == "")
+            IsUserLoggedIn(session_token_payload_obj, (is_logged_in) =>
             {
-                response.write("false");
-            }
-            else
+                response.writeHead(200, {"Content-Type": "text/plaintext"});
+
+                response.write(is_logged_in.toString());
+
+                response.end();
+            });
+        });
+    }
+    else if (request_url.pathname == "/get_clinic_district_names")
+    {
+        GetRequestBodyObjFromRequestObj(request, (request_body_obj) =>
+        {
+            let session_token_payload_obj = VerifyToken(request_body_obj.session_token);
+
+            if (session_token_payload_obj == null)
             {
-                response.write("true");
+                SendAccessDeniedResponse(response);
+
+                return;
             }
 
-            response.end();
+            IsUserLoggedIn(session_token_payload_obj, (is_logged_in) =>
+            {
+                if (is_logged_in == false)
+                {
+                    SendAccessDeniedResponse(response);
+
+                    return;
+                }
+
+                GetClinicDistrictNames((rows) =>
+                {
+                    response.writeHead(200, {"Content-Type": "application/json"});
+
+                    response.write(JSON.stringify(rows));
+
+                    response.end();
+                });
+            });
         });
     }
     // Status after testing: Working.

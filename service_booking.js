@@ -16,6 +16,14 @@ let payment_btn = document.getElementById("payment_btn");
 
 let return_to_homepage_btn = document.getElementById("return_to_homepage_btn");
 
+let clinic_appointment_location_selection_box = document.getElementById("clinic_appointment_location_selection_box");
+
+let clinic_appointment_doctor_selection_box = document.getElementById("clinic_appointment_doctor_selection_box");
+
+let service_booking_date_time_fields_title_label = document.getElementById("service_booking_date_time_fields_title_label");
+
+let service_booking_date_time_fields_div = document.getElementById("service_booking_date_time_fields_div");
+
 let initial_service_selection_key = sessionStorage.getItem("initial_service_selection_key");
 
 async function ServiceSelectionBoxInitializationProc()
@@ -96,6 +104,37 @@ async function UpdateServiceBookingFieldsPanel()
         }
     }
 
+    service_booking_date_time_fields_title_label.style.display = "block";
+
+    service_booking_date_time_fields_div.style.display = "flex";
+
+    if (FastDocAPI.FastDocServiceType[current_service_selection_key] == FastDocAPI.FastDocServiceType.OnlineDoctorConsultation)
+    {
+        service_booking_date_time_fields_title_label.innerText = "Date and time of the online consultation:";
+    }
+    else if (FastDocAPI.FastDocServiceType[current_service_selection_key] == FastDocAPI.FastDocServiceType.ClinicAppointment)
+    {
+        service_booking_date_time_fields_title_label.innerText = "Date and time of the in-person clinic appointment:";
+    }
+    else if (FastDocAPI.FastDocServiceType[current_service_selection_key] == FastDocAPI.FastDocServiceType.HealthScreening)
+    {
+        service_booking_date_time_fields_title_label.innerText = "Date and time of the health screening:";
+    }
+    else if (FastDocAPI.FastDocServiceType[current_service_selection_key] == FastDocAPI.FastDocServiceType.Vaccination)
+    {
+        service_booking_date_time_fields_title_label.innerText = "Date and time of the vaccination:";
+    }
+    else if (FastDocAPI.FastDocServiceType[current_service_selection_key] == FastDocAPI.FastDocServiceType.BehavioralHealthService)
+    {
+        service_booking_date_time_fields_title_label.innerText = "Date and time of the behavioral health check-up:";
+    }
+    else
+    {
+        service_booking_date_time_fields_title_label.style.display = "none";
+
+        service_booking_date_time_fields_div.style.display = "none";
+    }
+
     payment_btn.style.display = "block";
 
     return_to_homepage_btn.style.display = "block";
@@ -125,6 +164,54 @@ async function ConsultationDoctorSelectionBoxInitializationProc()
     });
 }
 
+async function ClinicAppointmentLocationSelectionBoxInitProc()
+{
+    FastDocAPI.GetClinicDistrictLocationNames((request_obj) =>
+    {
+        if (request_obj.status != 200)
+        {
+            console.log("Access denied.");
+
+            return;
+        }
+
+        let clinic_obj_arr = JSON.parse(request_obj.responseText);
+
+        for (let current_index = 0; current_index < clinic_obj_arr.length; current_index++)
+        {
+            let clinic_location_option_box = document.createElement("option");
+
+            clinic_location_option_box.innerText = clinic_obj_arr[current_index].DistrictName;
+
+            clinic_appointment_location_selection_box.appendChild(clinic_location_option_box);
+        }
+    });
+}
+
+async function ClinicAppointmentDoctorSelectionBoxInitProc()
+{
+    FastDocAPI.GetAllDoctorNames((request_obj) =>
+    {
+        if (request_obj.status != 200)
+        {
+            console.log("Access denied.");
+
+            return;
+        }
+
+        let doctor_obj_arr = JSON.parse(request_obj.responseText);
+
+        for (let current_index = 0; current_index < doctor_obj_arr.length; current_index++)
+        {
+            let doctor_name_option_box = document.createElement("option");
+
+            doctor_name_option_box.innerText = doctor_obj_arr[current_index].Name;
+
+            clinic_appointment_doctor_selection_box.appendChild(doctor_name_option_box);
+        }
+    });
+}
+
 service_selection_box.addEventListener("change", (event_obj) =>
 {
     UpdateServiceBookingFieldsPanel();
@@ -135,12 +222,24 @@ return_to_homepage_btn.addEventListener("click", (mouse_event_obj) =>
     window.location.href = "/index.html";
 });
 
+service_booking_form.addEventListener("submit", (submit_event_obj) =>
+{
+    
+});
+
 sessionStorage.setItem("initial_service_selection_key", null);
 
+// Initialization procedures for online consultation input fields.
 ServiceSelectionBoxInitializationProc();
 
 ConsultationDoctorSelectionBoxInitializationProc();
 
+// Initialization procedures for in-person clinic appointment input fields.
+ClinicAppointmentLocationSelectionBoxInitProc();
+
+ClinicAppointmentDoctorSelectionBoxInitProc();
+
+// Current displayed service booking subform update procedure.
 UpdateServiceBookingFieldsPanel();
 
 main_service_booking_container_div.style.display = "flex";

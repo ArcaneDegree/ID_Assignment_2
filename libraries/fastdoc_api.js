@@ -830,6 +830,14 @@ function LoadFastDocAPI()
         response_received_callback_function);
     }
 
+    function GetClinicDistrictLocationNames(response_received_callback_function)
+    {
+        SendRequestToServer("/get_clinic_district_names", "POST", JSON.stringify({
+            session_token: sessionStorage.getItem("session_token")
+        }),
+        response_received_callback_function);
+    }
+
     return {
         // Exposed API variables/constants
         TransactionMethod: TransactionMethod,
@@ -850,6 +858,7 @@ function LoadFastDocAPI()
         SignUpNewMember: SignUpNewMember,
         GetAllDoctorNames: GetAllDoctorNames,
         IsLoggedIn: IsLoggedIn,
+        GetClinicDistrictLocationNames: GetClinicDistrictLocationNames,
         
         // Exposed utility API functions
         GetMonthNameFromDateStr: GetMonthNameFromDateStr,
